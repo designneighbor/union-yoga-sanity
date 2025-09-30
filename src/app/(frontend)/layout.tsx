@@ -7,6 +7,16 @@ const font = IBM_Plex_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+// Add error boundary component
+function SanityLiveWrapper() {
+  try {
+    return <SanityLive />;
+  } catch (error) {
+    console.error('SanityLive error:', error);
+    return null; // Silently fail in production
+  }
+}
+
 export default function FrontendLayout({
   children,
 }: Readonly<{

@@ -6,18 +6,17 @@ export const components: PortableTextComponents = {
   types: {
     image: (props) =>
       props.value ? (
-        <Image
-          className="rounded-lg not-prose w-full h-auto"
-          src={urlFor(props.value)
-            .width(600)
-            .height(400)
-            .quality(80)
-            .auto("format")
-            .url()}
-          alt={props?.value?.alt || ""}
-          width="600"
-          height="400"
-        />
+        <figure className="relative rounded-md">
+          <Image
+            src={urlFor(props.value).width(944).height(400).quality(80).dpr(2).auto("format").url()}
+            className="rounded-md"
+            width={944} 
+            height={400} 
+            sizes="(max-width: 600px) 90vw, (min-width: 600px) 60vw, 500px"
+            quality={80}
+            alt={props?.value?.alt || ""}
+          />
+        </figure>
       ) : null,
   },
 };

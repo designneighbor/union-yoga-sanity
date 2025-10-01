@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export function PostCard(props: POSTS_QUERYResult[0]) {
-  const { title, author, mainImage, publishedAt, categories } = props
+  const { title, mainImage, publishedAt, categories } = props
 
   return (
     <Link className="group relative w-full" href={`/blog/${props.slug!.current}`}>

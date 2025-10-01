@@ -1,4 +1,3 @@
-import { Author } from "@/components/Author";
 import { Categories } from "@/components/Categories";
 import { components } from "@/sanity/portableTextComponents";
 import { PortableText } from "next-sanity";
@@ -9,7 +8,7 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
 export function Post(props: NonNullable<POST_QUERYResult>) {
-  const { title, author, mainImage, body, publishedAt, categories } = props;
+  const { title, mainImage, body, publishedAt, categories } = props;
 
   return (
     <article className="flex flex-col gap-4">

@@ -1,6 +1,7 @@
 import { type SchemaTypeDefinition } from 'sanity'
 import { pageType } from "./pageType";
 import { pageBuilderType } from "./pageBuilderType";
+import { siteSettingsType } from "./siteSettingsType";
 import { faqType } from "./faqType";
 import { faqsType } from "./blocks/faqsType";
 import { featuresType } from "./blocks/featuresType";
@@ -22,6 +23,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     pageBuilderType,
     faqType,
     faqsType,
+    siteSettingsType,
     featuresType,
     heroType,
     splitImageType,

@@ -15,7 +15,7 @@ export function PageBuilder({ content }: PageBuilderProps) {
 
   return (
     <main>
-      {content.map((block) => {
+      {content.map((block, index) => {
         switch (block._type) {
           case "hero":
             return <Hero key={block._key} {...block} />;
@@ -27,7 +27,7 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return <FAQs key={block._key} {...block} />;
           default:
             // This is a fallback for when we don't have a block type
-            return <div key={block._key}>Block not found: {block._type}</div>;
+            return <div key={`unknown-${index}`}>Block not found: {String((block as { _type: string })._type)}</div>;
         }
       })}
     </main>

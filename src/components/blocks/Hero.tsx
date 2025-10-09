@@ -1,23 +1,25 @@
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { Button } from "@/components/Button";
 import { PAGE_QUERYResult } from "@/sanity/types";
+import Link from "next/link";
 
 type HeroProps = Extract<
   NonNullable<NonNullable<PAGE_QUERYResult>["content"]>[number],
   { _type: "hero" }
 >;
 
-export function Hero({ title, text, image }: HeroProps) {
+export function Hero({ title, text, image, button }: HeroProps) {
   return (
-    <section className="min-h-auto py-6 md:py-12 flex items-center justify-center bg-neutral-50">
+    <section className="min-h-auto py-12 md:py-12 flex items-center justify-center bg-neutral-50">
       <div className="container px-4 sm:px-6 md:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-2 items-center">
           {/* Left Column - Text Content */}
-          <div className="space-y-8 order-2 lg:order-1">
+          <div className="space-y-4 lg:space-y-8 order-2 lg:order-1">
             {/* Main Heading */}
             {title ? (
-              <h1 className="font-sans text-4xl sm:text-5xl lg:text-6xl xl:text-7xl/19 text-primary-950 leading-tight fade-in-up delay-200">
+              <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl xl:text-7xl/19 text-primary-950 leading-tight fade-in-up delay-200">
                 {title}
               </h1>
             ) : null}
@@ -26,6 +28,17 @@ export function Hero({ title, text, image }: HeroProps) {
             <div className="font-sans text-lg sm:text-xl lg:text-2xl text-foreground text-primary-950 leading-relaxed max-w-2xl fade-in-up delay-300">
               {text ? <PortableText value={text} /> : null}
             </div>
+
+            {/* Button */}
+            {button?.text && button?.url && (
+              <Link
+                href={button.url}
+                target={button.newTab ? "_blank" : undefined}
+                rel={button.newTab ? "noopener noreferrer" : undefined}
+              >
+                <Button variant="primary">{button.text}</Button>
+              </Link>
+            )}
           </div>
 
           {/* Right Column - Image */}

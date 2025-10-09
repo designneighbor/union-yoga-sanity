@@ -28,6 +28,33 @@ export const splitImageType = defineType({
       type: "image",
       options: {hotspot: true},
     }),
+    defineField({
+      name: "button",
+      type: "object",
+      fields: [
+        {
+          name: "text",
+          type: "string",
+          title: "Button Text",
+        },
+        {
+          name: "url",
+          type: "url",
+          title: "Button Link",
+          validation: (Rule) => Rule.uri({
+            allowRelative: true, // This is the key - allows "/blog" style links
+            scheme: ['http', 'https', 'mailto', 'tel', '/']
+          })
+        },
+        {
+          name: "newTab",
+          type: "boolean",
+          title: "Open in new tab",
+          description: "Check this to open the link in a new browser tab",
+          initialValue: false,
+        },
+      ],
+    }),
   ],
   icon: BlockContentIcon,
   preview: {

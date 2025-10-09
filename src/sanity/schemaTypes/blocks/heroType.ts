@@ -17,6 +17,33 @@ export const heroType = defineType({
       name: "image",
       type: "image",
     }),
+    defineField({
+      name: "button",
+      type: "object",
+      fields: [
+        {
+          name: "text",
+          type: "string",
+          title: "Button Text",
+        },
+        {
+          name: "url",
+          type: "url",
+          title: "Button Link",
+          validation: (Rule) => Rule.uri({
+            allowRelative: true, // This is the key - allows "/blog" style links
+            scheme: ['http', 'https', 'mailto', 'tel', '/']
+          })
+        },
+        {
+          name: "newTab",
+          type: "boolean",
+          title: "Open in new tab",
+          description: "Check this to open the link in a new browser tab",
+          initialValue: false,
+        },
+      ],
+    }),
   ],
   icon: TextIcon,
   preview: {

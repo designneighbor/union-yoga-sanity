@@ -2,9 +2,20 @@
 
 import Link from "next/link";
 import { useDraftModeEnvironment } from "next-sanity/hooks";
+import { useEffect, useState } from "react";
 
 export function DisableDraftMode() {
   const environment = useDraftModeEnvironment();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
 
   // Only show the disable draft mode button when outside of Presentation Tool
   if (environment !== "live" && environment !== "unknown") {

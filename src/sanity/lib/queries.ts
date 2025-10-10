@@ -55,7 +55,12 @@ export const PAGE_QUERY =
     ...,
     _type == "faqs" => {
       ...,
-      faqs[]->
+      faqs[]->{
+        _id,
+        _type,
+        title,
+        body
+      }
     }
   }
 }`);
@@ -67,7 +72,12 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
       ...,
       _type == "faqs" => {
         ...,
-        faqs[]->
+        faqs[]->{
+          _id,
+          _type,
+          title,
+          body
+        }
       }
     }      
   }

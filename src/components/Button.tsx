@@ -13,10 +13,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     
     const variantClasses = {
       primary: 'bg-secondary-700 text-white font-normal hover:bg-secondary-900 active:ring-secondary-900 ring-1 ring-secondary-700 hover:ring-secondary-900',
-      secondary: 'bg-neutral-200 text-neutral-950 font-normal hover:bg-neutral-100 focus-visible:ring-neutral-700 ring-1 ring-neutral-500',
+      secondary: 'bg-primary-950 text-white font-normal hover:bg-primary-700 focus-visible:ring-primary-700 ring-1 ring-primary-950',
     };
     const sizeClasses = {
-      sm: 'h-10 px-4 py-2 text-sm',
+      sm: 'h-auto px-4 py-2 text-sm',
       base: 'h-10 px-6 py-4 text-base',
     };
     

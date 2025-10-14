@@ -21,7 +21,7 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
     className = '',
     logoText = "Union Yoga",
     navigationItems = [
-      { label: "About", href: "#about" },
+      { label: "About", href: "/about" },
       { label: "Classes", href: "#classes" },
       { label: "Blog", href: "/blog" }
     ],

@@ -2,6 +2,10 @@ import { Hero } from "@/components/blocks/Hero";
 import { Features } from "@/components/blocks/Features";
 import { SplitImage } from "@/components/blocks/SplitImage";
 import { FAQs } from "@/components/blocks/FAQs";
+import { Prose } from "@/components/blocks/Prose";
+import { PageTitle } from "@/components/blocks/pageTitle";
+import { CallToAction } from "@/components/blocks/CallToAction";
+import { Testimonials } from "@/components/blocks/Testimonials";
 import { PAGE_QUERYResult } from "@/sanity/types";
 
 type PageBuilderProps = {
@@ -25,9 +29,21 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return <SplitImage key={block._key} {...block} />;
           case "faqs":
             return <FAQs key={block._key} {...block} />;
+          case "callToAction":
+            return <CallToAction key={block._key} {...block} />;
+          case "prose":
+            return <Prose key={block._key} {...block} />;
+          case "testimonials":
+            return <Testimonials key={block._key} {...block} />;
+          case "pageTitle":
+            return <PageTitle key={block._key} {...block} />;
           default:
             // This is a fallback for when we don't have a block type
-            return <div key={`unknown-${index}`}>Block not found: {String((block as { _type: string })._type)}</div>;
+            return (
+              <div key={`unknown-${index}`}>
+                Block not found: {String((block as { _type: string })._type)}
+              </div>
+            );
         }
       })}
     </main>

@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "predev": "npm run typegen",
     "prebuild": "npm run typegen",
-    "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate"
+    "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate",
+    "postbuild": "echo 'Build completed successfully'",
+    "vercel-build": "npm run typegen && npm run build"
   },
   "dependencies": {
     "@sanity/icons": "^3.7.4",

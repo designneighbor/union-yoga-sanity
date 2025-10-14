@@ -12,7 +12,7 @@ type HeroProps = Extract<
 
 export function Hero({ title, text, image, button }: HeroProps) {
   return (
-    <section className="min-h-auto py-12 md:py-12 flex items-center justify-center bg-neutral-50">
+    <section className="min-h-auto py-12 md:py-12 flex items-center justify-center bg-linear-to-b from-neutral-50 to-white">
       <div className="container px-4 sm:px-6 md:px-8 xl:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-2 items-center">
           {/* Left Column - Text Content */}

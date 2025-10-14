@@ -8,6 +8,10 @@ export const pageBuilderType = defineType({
     defineArrayMember({ type: "splitImage" }),
     defineArrayMember({ type: "features" }),
     defineArrayMember({ type: "faqs" }),
+    defineArrayMember({ type: "callToAction" }),
+    defineArrayMember({ type: "pageTitle" }),
+    defineArrayMember({ type: "prose" }),
+    defineArrayMember({ type: "testimonials" }),
   ],
   options: {
     insertMenu: {

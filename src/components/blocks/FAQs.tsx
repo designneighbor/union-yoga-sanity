@@ -9,7 +9,7 @@ type FAQsProps = Extract<
   { _type: "faqs" }
 >;
 
-export function FAQs({ _key, title, faqs }: FAQsProps) {
+export function FAQs({ title, faqs }: FAQsProps) {
   const [openFaqs, setOpenFaqs] = useState<Set<string>>(new Set());
 
   const toggleFaq = (faqId: string) => {

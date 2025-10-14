@@ -61,6 +61,17 @@ export const PAGE_QUERY =
         title,
         body
       }
+    },
+    _type == "testimonials" => {
+      ...,
+      testimonials[]->{
+        _id,
+        _type,
+        quote,
+        name,
+        company,
+        image
+      }
     }
   }
 }`);
@@ -77,6 +88,17 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
           _type,
           title,
           body
+        }
+      },
+      _type == "testimonials" => {
+        ...,
+        testimonials[]->{
+          _id,
+          _type,
+          quote,
+          name,
+          company,
+          image
         }
       }
     }      

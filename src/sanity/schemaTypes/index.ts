@@ -12,6 +12,9 @@ import { callToActionType } from "./blocks/callToActionType";
 import { proseType } from "./blocks/proseType";
 import { testimonialsType } from "./blocks/testimonialsType";
 import { testimonialType } from "./testimonalType";
+import { formType } from "./formType";
+import { formFieldType } from "./formFieldType";
+import { formBlockType } from "./blocks/formBlockType";
 
 import {blockContentType} from './blockContentType'
 import {categoryType} from './categoryType'
@@ -37,5 +40,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     callToActionType,
     testimonialType,
     testimonialsType,
+    formType,
+    formFieldType,
+    formBlockType,
   ],
 }

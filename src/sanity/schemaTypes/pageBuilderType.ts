@@ -12,6 +12,7 @@ export const pageBuilderType = defineType({
     defineArrayMember({ type: "pageTitle" }),
     defineArrayMember({ type: "prose" }),
     defineArrayMember({ type: "testimonials" }),
+    defineArrayMember({ type: "formBlock" }),
   ],
   options: {
     insertMenu: {

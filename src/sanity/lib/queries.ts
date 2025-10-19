@@ -72,6 +72,22 @@ export const PAGE_QUERY =
         company,
         image
       }
+    },
+    _type == "formBlock" => {
+      ...,
+      form->{
+        _id,
+        name,
+        fields[]{
+          name,
+          label,
+          fieldType,
+          required,
+          placeholder
+        },
+        submitButtonText,
+        recipientEmail
+      }
     }
   }
 }`);
@@ -100,7 +116,37 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
           company,
           image
         }
+      },
+      _type == "formBlock" => {
+        ...,
+        form->{
+          _id,
+          name,
+          fields[]{
+            name,
+            label,
+            fieldType,
+            required,
+            placeholder
+          },
+          submitButtonText,
+          recipientEmail
+        }
       }
     }      
   }
+}`);
+
+export const FORM_QUERY = defineQuery(`*[_type == "form" && _id == $formId][0]{
+  _id,
+  name,
+  fields[]{
+    name,
+    label,
+    fieldType,
+    required,
+    placeholder
+  },
+  submitButtonText,
+  recipientEmail
 }`);

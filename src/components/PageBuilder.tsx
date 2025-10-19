@@ -6,6 +6,7 @@ import { Prose } from "@/components/blocks/Prose";
 import { PageTitle } from "@/components/blocks/pageTitle";
 import { CallToAction } from "@/components/blocks/CallToAction";
 import { Testimonials } from "@/components/blocks/Testimonials";
+import { Form } from "@/components/blocks/Form";
 import { PAGE_QUERYResult } from "@/sanity/types";
 
 type PageBuilderProps = {
@@ -37,6 +38,8 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return <Testimonials key={block._key} {...block} />;
           case "pageTitle":
             return <PageTitle key={block._key} {...block} />;
+          case "formBlock":
+            return block.form ? <Form key={block._key} form={block.form} /> : null;
           default:
             // This is a fallback for when we don't have a block type
             return (

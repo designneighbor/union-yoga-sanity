@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { FormIcon } from "@sanity/icons";
+import { EnvelopeIcon } from "@sanity/icons";
 
 export const formBlockType = defineType({
   name: "formBlock",
@@ -15,7 +15,7 @@ export const formBlockType = defineType({
       validation: (Rule) => Rule.required()
     })
   ],
-  icon: FormIcon,
+  icon: EnvelopeIcon,
   preview: {
     select: {
       formName: "form.name",
@@ -26,7 +26,7 @@ export const formBlockType = defineType({
       return {
         title: formName || "Form",
         subtitle: `${fieldCount} field${fieldCount !== 1 ? 's' : ''}`,
-        media: FormIcon
+        media: EnvelopeIcon
       };
     }
   }

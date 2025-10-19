@@ -17,7 +17,14 @@ This project is optimized for deployment on Vercel with Sanity CMS integration.
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id_here
    NEXT_PUBLIC_SANITY_DATASET=production
    NEXT_PUBLIC_SANITY_API_VERSION=2025-09-28
+   RESEND_API_KEY=your_resend_api_key_here
    ```
+
+   **Resend Setup:**
+   - Sign up for a Resend account at [resend.com](https://resend.com)
+   - Create an API key in your Resend dashboard
+   - Add the API key to your Vercel environment variables
+   - This is required for form submission email functionality
 
 ### Deployment Steps
 

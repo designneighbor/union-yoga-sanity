@@ -4,19 +4,19 @@ import { useState } from 'react';
 import { Button } from '@/components/Button';
 
 interface FormField {
-  name: string;
-  label: string;
-  fieldType: 'text' | 'email' | 'tel' | 'textarea';
-  required: boolean;
-  placeholder?: string;
+  name: string | null;
+  label: string | null;
+  fieldType: 'text' | 'email' | 'tel' | 'textarea' | null;
+  required: boolean | null;
+  placeholder?: string | null;
 }
 
 interface FormData {
   _id: string;
-  name: string;
-  fields: FormField[];
-  submitButtonText: string;
-  recipientEmail: string;
+  name: string | null;
+  fields: FormField[] | null;
+  submitButtonText: string | null;
+  recipientEmail: string | null;
 }
 
 interface FormProps {
@@ -29,7 +29,13 @@ export function Form({ form }: FormProps) {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleInputChange = (fieldName: string, value: string) => {
+  // Early return if form data is incomplete
+  if (!form.name || !form.fields || !form.submitButtonText || !form.recipientEmail) {
+    return null;
+  }
+
+  const handleInputChange = (fieldName: string | null, value: string) => {
+    if (!fieldName) return;
     setFormData(prev => ({
       ...prev,
       [fieldName]: value
@@ -39,7 +45,11 @@ export function Form({ form }: FormProps) {
   const validateForm = (): string[] => {
     const errors: string[] = [];
     
+    if (!form.fields) return errors;
+    
     form.fields.forEach(field => {
+      if (!field.name || !field.label || !field.fieldType) return;
+      
       const value = formData[field.name] || '';
       
       if (field.required && (!value || value.trim() === '')) {
@@ -93,7 +103,6 @@ export function Form({ form }: FormProps) {
           formId: form._id,
           formName: form.name,
           fields: form.fields,
-          submitButtonText: form.submitButtonText,
           recipientEmail: form.recipientEmail,
           formData: formData,
         }),
@@ -108,7 +117,7 @@ export function Form({ form }: FormProps) {
         setErrorMessage(result.error || 'An error occurred while submitting the form');
         setSubmitStatus('error');
       }
-    } catch (error) {
+    } catch {
       setErrorMessage('An error occurred while submitting the form');
       setSubmitStatus('error');
     } finally {
@@ -117,14 +126,16 @@ export function Form({ form }: FormProps) {
   };
 
   const renderField = (field: FormField) => {
+    if (!field.name || !field.label || !field.fieldType) return null;
+    
     const commonProps = {
       id: field.name,
       name: field.name,
       value: formData[field.name] || '',
       onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => 
-        handleInputChange(field.name, e.target.value),
-      placeholder: field.placeholder,
-      required: field.required,
+        handleInputChange(field.name!, e.target.value),
+      placeholder: field.placeholder || undefined,
+      required: field.required || false,
       className: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors",
       'aria-describedby': field.required ? `${field.name}-required` : undefined,
     };
@@ -157,7 +168,7 @@ export function Form({ form }: FormProps) {
             </svg>
           </div>
           <h3 className="text-lg font-medium text-green-900 mb-2">Form Submitted Successfully!</h3>
-          <p className="text-green-700">Thank you for your submission. We'll get back to you soon.</p>
+          <p className="text-green-700">Thank you for your submission. We&apos;ll get back to you soon.</p>
         </div>
       </div>
     );
@@ -170,27 +181,31 @@ export function Form({ form }: FormProps) {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">{form.name}</h2>
         </div>
 
-        {form.fields.map((field) => (
-          <div key={field.name} className="space-y-2">
-            <label 
-              htmlFor={field.name}
-              className="block text-sm font-medium text-gray-700"
-            >
-              {field.label}
+        {form.fields.map((field) => {
+          if (!field.name || !field.label) return null;
+          
+          return (
+            <div key={field.name} className="space-y-2">
+              <label 
+                htmlFor={field.name}
+                className="block text-sm font-medium text-gray-700"
+              >
+                {field.label}
+                {field.required && (
+                  <span className="text-red-500 ml-1" aria-label="required">
+                    *
+                  </span>
+                )}
+              </label>
+              {renderField(field)}
               {field.required && (
-                <span className="text-red-500 ml-1" aria-label="required">
-                  *
-                </span>
+                <p id={`${field.name}-required`} className="text-sm text-gray-500">
+                  This field is required
+                </p>
               )}
-            </label>
-            {renderField(field)}
-            {field.required && (
-              <p id={`${field.name}-required`} className="text-sm text-gray-500">
-                This field is required
-              </p>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
 
         {submitStatus === 'error' && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">

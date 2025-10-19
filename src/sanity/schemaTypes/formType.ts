@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { FormIcon } from "@sanity/icons";
+import { EnvelopeIcon } from "@sanity/icons";
 
 export const formType = defineType({
   name: "form",
@@ -35,7 +35,7 @@ export const formType = defineType({
       validation: (Rule) => Rule.required().email().error("Please enter a valid email address")
     })
   ],
-  icon: FormIcon,
+  icon: EnvelopeIcon,
   preview: {
     select: {
       title: "name",
@@ -47,7 +47,7 @@ export const formType = defineType({
       return {
         title,
         subtitle: `${fieldCountValue} field${fieldCountValue !== 1 ? 's' : ''} → ${recipient}`,
-        media: FormIcon
+        media: EnvelopeIcon
       };
     }
   }

@@ -15,7 +15,6 @@ interface FormSubmission {
   formId: string;
   formName: string;
   fields: FormField[];
-  submitButtonText: string;
   recipientEmail: string;
   formData: Record<string, string>;
 }
@@ -23,7 +22,7 @@ interface FormSubmission {
 export async function POST(request: NextRequest) {
   try {
     const body: FormSubmission = await request.json();
-    const { formId, formName, fields, submitButtonText, recipientEmail, formData } = body;
+    const { formId, formName, fields, recipientEmail, formData } = body;
 
     // Validate required fields
     if (!formId || !formName || !fields || !recipientEmail || !formData) {

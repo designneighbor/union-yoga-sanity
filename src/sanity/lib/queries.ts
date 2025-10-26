@@ -1,4 +1,4 @@
-import { defineQuery } from 'next-sanity'
+import { defineQuery } from "next-sanity";
 
 export const POSTS_QUERY =
   defineQuery(`*[_type == "post" && defined(slug.current)]|order(publishedAt desc)[0...12]{
@@ -20,12 +20,12 @@ export const POSTS_QUERY =
     name,
     image
   }
-}`)
+}`);
 
 export const POSTS_SLUGS_QUERY =
   defineQuery(`*[_type == "post" && defined(slug.current)]{ 
   "slug": slug.current
-}`)
+}`);
 
 export const POST_QUERY =
   defineQuery(`*[_type == "post" && slug.current == $slug][0]{
@@ -46,7 +46,7 @@ export const POST_QUERY =
     name,
     image
   }
-}`)
+}`);
 
 export const PAGE_QUERY =
   defineQuery(`*[_type == "page" && slug.current == $slug][0]{
@@ -74,21 +74,26 @@ export const PAGE_QUERY =
       }
     },
     _type == "formBlock" => {
-      ...,
-      form->{
-        _id,
-        name,
-        fields[]{
-          name,
-          label,
-          fieldType,
-          required,
-          placeholder
-        },
-        submitButtonText,
-        recipientEmail
+  ...,
+  form->{
+    _id,
+    name,
+    title,
+    text,
+    fields[]{
+      name,
+      label,
+      fieldType,
+      required,
+      options[]{
+        label,
+        value
       }
-    }
+    },
+    submitButtonText,
+    recipientEmail
+  }
+}
   }
 }`);
 
@@ -118,21 +123,26 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
         }
       },
       _type == "formBlock" => {
-        ...,
-        form->{
-          _id,
-          name,
-          fields[]{
-            name,
-            label,
-            fieldType,
-            required,
-            placeholder
-          },
-          submitButtonText,
-          recipientEmail
-        }
+  ...,
+  form->{
+    _id,
+    name,
+    title,
+    text,
+    fields[]{
+      name,
+      label,
+      fieldType,
+      required,
+      options[]{
+        label,
+        value
       }
+    },
+    submitButtonText,
+    recipientEmail
+  }
+}
     }      
   }
 }`);
@@ -140,12 +150,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
 export const FORM_QUERY = defineQuery(`*[_type == "form" && _id == $formId][0]{
   _id,
   name,
+  title,
+  text,
   fields[]{
     name,
     label,
     fieldType,
     required,
-    placeholder
+    width,
+    options[]{
+      label,
+      value
+    }
   },
   submitButtonText,
   recipientEmail

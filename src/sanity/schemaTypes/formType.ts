@@ -10,8 +10,16 @@ export const formType = defineType({
       name: "name",
       type: "string",
       title: "Form Name",
-      description: "Internal name for the form (e.g., 'Private Session Request')",
+      description: "Internal name for the form (e.g., 'Contact Us Form')",
       validation: (Rule) => Rule.required()
+    }),
+    defineField({
+      name: "title",
+      type: "string",
+    }),
+    defineField({
+      name: "text",
+      type: "blockContent",
     }),
     defineField({
       name: "fields",

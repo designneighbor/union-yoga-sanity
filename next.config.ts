@@ -9,10 +9,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optimize for Vercel deployment
-  experimental: {
-    optimizePackageImports: ['@sanity/icons', 'lucide-react'],
-  },
   // Ensure proper static generation
   output: 'standalone',
   // Optimize bundle size

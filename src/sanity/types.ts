@@ -27,9 +27,13 @@ export type FormField = {
   _type: "formField";
   name?: string;
   label?: string;
-  fieldType?: "text" | "email" | "tel" | "textarea";
+  fieldType?: "text" | "email" | "tel" | "textarea" | "radio" | "select";
   required?: boolean;
-  placeholder?: string;
+  options?: Array<{
+    label?: string;
+    value?: string;
+    _key: string;
+  }>;
 };
 
 export type Form = {
@@ -39,6 +43,38 @@ export type Form = {
   _updatedAt: string;
   _rev: string;
   name?: string;
+  title?: string;
+  text?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
   fields?: Array<{
     _key: string;
   } & FormField>;
@@ -856,7 +892,7 @@ export type POST_QUERYResult = {
   } | null;
 } | null;
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{  ...,  content[]{    ...,    _type == "faqs" => {      ...,      faqs[]->{        _id,        _type,        title,        body      }    },    _type == "testimonials" => {      ...,      testimonials[]->{        _id,        _type,        quote,        name,        company,        image      }    },    _type == "formBlock" => {      ...,      form->{        _id,        name,        fields[]{          name,          label,          fieldType,          required,          placeholder        },        submitButtonText,        recipientEmail      }    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0]{  ...,  content[]{    ...,    _type == "faqs" => {      ...,      faqs[]->{        _id,        _type,        title,        body      }    },    _type == "testimonials" => {      ...,      testimonials[]->{        _id,        _type,        quote,        name,        company,        image      }    },    _type == "formBlock" => {  ...,  form->{    _id,    name,    title,    text,    fields[]{      name,      label,      fieldType,      required,      options[]{        label,        value      }    },    submitButtonText,    recipientEmail  }}  }}
 export type PAGE_QUERYResult = {
   _id: string;
   _type: "page";
@@ -985,12 +1021,47 @@ export type PAGE_QUERYResult = {
     form: {
       _id: string;
       name: string | null;
+      title: string | null;
+      text: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        _key: string;
+      }> | null;
       fields: Array<{
         name: string | null;
         label: string | null;
-        fieldType: "email" | "tel" | "text" | "textarea" | null;
+        fieldType: "email" | "radio" | "select" | "tel" | "text" | "textarea" | null;
         required: boolean | null;
-        placeholder: string | null;
+        options: Array<{
+          label: string | null;
+          value: string | null;
+        }> | null;
       }> | null;
       submitButtonText: string | null;
       recipientEmail: string | null;
@@ -1198,7 +1269,7 @@ export type PAGE_QUERYResult = {
   };
 } | null;
 // Variable: HOME_PAGE_QUERY
-// Query: *[_id == "siteSettings"][0]{  homePage->{    ...,    content[]{      ...,      _type == "faqs" => {        ...,        faqs[]->{          _id,          _type,          title,          body        }      },      _type == "testimonials" => {        ...,        testimonials[]->{          _id,          _type,          quote,          name,          company,          image        }      },      _type == "formBlock" => {        ...,        form->{          _id,          name,          fields[]{            name,            label,            fieldType,            required,            placeholder          },          submitButtonText,          recipientEmail        }      }    }        }}
+// Query: *[_id == "siteSettings"][0]{  homePage->{    ...,    content[]{      ...,      _type == "faqs" => {        ...,        faqs[]->{          _id,          _type,          title,          body        }      },      _type == "testimonials" => {        ...,        testimonials[]->{          _id,          _type,          quote,          name,          company,          image        }      },      _type == "formBlock" => {  ...,  form->{    _id,    name,    title,    text,    fields[]{      name,      label,      fieldType,      required,      options[]{        label,        value      }    },    submitButtonText,    recipientEmail  }}    }        }}
 export type HOME_PAGE_QUERYResult = {
   homePage: null;
 } | {
@@ -1330,12 +1401,47 @@ export type HOME_PAGE_QUERYResult = {
       form: {
         _id: string;
         name: string | null;
+        title: string | null;
+        text: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+          listItem?: "bullet";
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        } | {
+          asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          _key: string;
+        }> | null;
         fields: Array<{
           name: string | null;
           label: string | null;
-          fieldType: "email" | "tel" | "text" | "textarea" | null;
+          fieldType: "email" | "radio" | "select" | "tel" | "text" | "textarea" | null;
           required: boolean | null;
-          placeholder: string | null;
+          options: Array<{
+            label: string | null;
+            value: string | null;
+          }> | null;
         }> | null;
         submitButtonText: string | null;
         recipientEmail: string | null;
@@ -1544,16 +1650,52 @@ export type HOME_PAGE_QUERYResult = {
   } | null;
 } | null;
 // Variable: FORM_QUERY
-// Query: *[_type == "form" && _id == $formId][0]{  _id,  name,  fields[]{    name,    label,    fieldType,    required,    placeholder  },  submitButtonText,  recipientEmail}
+// Query: *[_type == "form" && _id == $formId][0]{  _id,  name,  title,  text,  fields[]{    name,    label,    fieldType,    required,    width,    options[]{      label,      value    }  },  submitButtonText,  recipientEmail}
 export type FORM_QUERYResult = {
   _id: string;
   name: string | null;
+  title: string | null;
+  text: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }> | null;
   fields: Array<{
     name: string | null;
     label: string | null;
-    fieldType: "email" | "tel" | "text" | "textarea" | null;
+    fieldType: "email" | "radio" | "select" | "tel" | "text" | "textarea" | null;
     required: boolean | null;
-    placeholder: string | null;
+    width: null;
+    options: Array<{
+      label: string | null;
+      value: string | null;
+    }> | null;
   }> | null;
   submitButtonText: string | null;
   recipientEmail: string | null;
@@ -1566,8 +1708,8 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)]|order(publishedAt desc)[0...12]{\n  _id,\n  title,\n  slug,\n  body,\n  mainImage,\n  publishedAt,\n  \"categories\": coalesce(\n    categories[]->{\n      _id,\n      slug,\n      title\n    },\n    []\n  ),\n  author->{\n    name,\n    image\n  }\n}": POSTS_QUERYResult;
     "*[_type == \"post\" && defined(slug.current)]{ \n  \"slug\": slug.current\n}": POSTS_SLUGS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  body,\n  mainImage,\n  publishedAt,\n  \"categories\": coalesce(\n    categories[]->{\n      _id,\n      slug,\n      title\n    },\n    []\n  ),\n  author->{\n    name,\n    image\n  }\n}": POST_QUERYResult;
-    "*[_type == \"page\" && slug.current == $slug][0]{\n  ...,\n  content[]{\n    ...,\n    _type == \"faqs\" => {\n      ...,\n      faqs[]->{\n        _id,\n        _type,\n        title,\n        body\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      testimonials[]->{\n        _id,\n        _type,\n        quote,\n        name,\n        company,\n        image\n      }\n    },\n    _type == \"formBlock\" => {\n      ...,\n      form->{\n        _id,\n        name,\n        fields[]{\n          name,\n          label,\n          fieldType,\n          required,\n          placeholder\n        },\n        submitButtonText,\n        recipientEmail\n      }\n    }\n  }\n}": PAGE_QUERYResult;
-    "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    content[]{\n      ...,\n      _type == \"faqs\" => {\n        ...,\n        faqs[]->{\n          _id,\n          _type,\n          title,\n          body\n        }\n      },\n      _type == \"testimonials\" => {\n        ...,\n        testimonials[]->{\n          _id,\n          _type,\n          quote,\n          name,\n          company,\n          image\n        }\n      },\n      _type == \"formBlock\" => {\n        ...,\n        form->{\n          _id,\n          name,\n          fields[]{\n            name,\n            label,\n            fieldType,\n            required,\n            placeholder\n          },\n          submitButtonText,\n          recipientEmail\n        }\n      }\n    }      \n  }\n}": HOME_PAGE_QUERYResult;
-    "*[_type == \"form\" && _id == $formId][0]{\n  _id,\n  name,\n  fields[]{\n    name,\n    label,\n    fieldType,\n    required,\n    placeholder\n  },\n  submitButtonText,\n  recipientEmail\n}": FORM_QUERYResult;
+    "*[_type == \"page\" && slug.current == $slug][0]{\n  ...,\n  content[]{\n    ...,\n    _type == \"faqs\" => {\n      ...,\n      faqs[]->{\n        _id,\n        _type,\n        title,\n        body\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      testimonials[]->{\n        _id,\n        _type,\n        quote,\n        name,\n        company,\n        image\n      }\n    },\n    _type == \"formBlock\" => {\n  ...,\n  form->{\n    _id,\n    name,\n    title,\n    text,\n    fields[]{\n      name,\n      label,\n      fieldType,\n      required,\n      options[]{\n        label,\n        value\n      }\n    },\n    submitButtonText,\n    recipientEmail\n  }\n}\n  }\n}": PAGE_QUERYResult;
+    "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    content[]{\n      ...,\n      _type == \"faqs\" => {\n        ...,\n        faqs[]->{\n          _id,\n          _type,\n          title,\n          body\n        }\n      },\n      _type == \"testimonials\" => {\n        ...,\n        testimonials[]->{\n          _id,\n          _type,\n          quote,\n          name,\n          company,\n          image\n        }\n      },\n      _type == \"formBlock\" => {\n  ...,\n  form->{\n    _id,\n    name,\n    title,\n    text,\n    fields[]{\n      name,\n      label,\n      fieldType,\n      required,\n      options[]{\n        label,\n        value\n      }\n    },\n    submitButtonText,\n    recipientEmail\n  }\n}\n    }      \n  }\n}": HOME_PAGE_QUERYResult;
+    "*[_type == \"form\" && _id == $formId][0]{\n  _id,\n  name,\n  title,\n  text,\n  fields[]{\n    name,\n    label,\n    fieldType,\n    required,\n    width,\n    options[]{\n      label,\n      value\n    }\n  },\n  submitButtonText,\n  recipientEmail\n}": FORM_QUERYResult;
   }
 }

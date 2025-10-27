@@ -15,6 +15,7 @@ import { testimonialType } from "./testimonalType";
 import { formType } from "./formType";
 import { formFieldType } from "./formFieldType";
 import { formBlockType } from "./blocks/formBlockType";
+import { formSubmissionType } from "./formSubmissionType";
 
 import {blockContentType} from './blockContentType'
 import {categoryType} from './categoryType'
@@ -43,5 +44,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     formType,
     formFieldType,
     formBlockType,
+    formSubmissionType,
   ],
 }

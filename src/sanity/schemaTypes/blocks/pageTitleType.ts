@@ -17,6 +17,10 @@ export const pageTitleType = defineType({
       name: "text",
       type: "string",
     }),
+    defineField({
+      name: "image",
+      type: "image",
+    }),
   ],
   icon: TextIcon,
   preview: {

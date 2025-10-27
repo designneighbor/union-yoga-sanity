@@ -54,7 +54,7 @@ export function SplitImage({
           ) : null}
 
           {/* Text */}
-          <div className="font-sans text-lg sm:text-xl lg:text-2xl text-primary-950 leading-relaxed fade-in-up delay-300">
+          <div className="font-sans text-lg sm:text-xl lg:text-2xl text-primary-950 leading-relaxed">
             {text ? <PortableText value={text} /> : null}
           </div>
 

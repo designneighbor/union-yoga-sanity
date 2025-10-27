@@ -37,7 +37,7 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
     const isHomePage = pathname === '/';
     
     // Animation classes - only apply on home page
-    const animationClass = isHomePage ? 'fade-in-down delay-200' : '';
+    const animationClass = isHomePage ? '' : '';
 
     const toggleMobileMenu = () => {
       setIsMobileMenuOpen(!isMobileMenuOpen);

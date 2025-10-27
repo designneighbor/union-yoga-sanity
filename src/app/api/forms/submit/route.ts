@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { writeClient } from "@/sanity/lib/writeClient";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -194,6 +195,33 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("Email sent successfully:", data);
+
+    // Store submission in Sanity
+    try {
+      const submissionData = fields.map(field => ({
+        fieldName: field.name,
+        fieldLabel: field.label,
+        value: formData[field.name] || "Not provided"
+      }));
+
+      const submission = await writeClient.create({
+        _type: "formSubmission",
+        form: {
+          _type: "reference",
+          _ref: formId
+        },
+        submittedAt: new Date().toISOString(),
+        status: "unread",
+        data: submissionData,
+        ipAddress: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown",
+        userAgent: request.headers.get("user-agent") || "unknown"
+      });
+
+      console.log("Submission stored in Sanity:", submission._id);
+    } catch (sanityError) {
+      console.error("Failed to store submission in Sanity:", sanityError);
+      // Continue with success response even if Sanity storage fails
+    }
 
     return NextResponse.json(
       {

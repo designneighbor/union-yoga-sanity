@@ -10,6 +10,15 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("author").title("Authors"),
       S.divider(),
       S.documentTypeListItem("form").title("Forms"),
+      S.listItem()
+        .id("formSubmissions")
+        .title("Form Submissions")
+        .child(
+          S.documentTypeList("formSubmission")
+            .title("Form Submissions")
+            .filter('_type == "formSubmission"')
+            .defaultOrdering([{ field: "submittedAt", direction: "desc" }])
+        ),
       S.documentTypeListItem("page").title("Pages"),
       S.documentTypeListItem("faq").title("FAQs"),
       S.listItem()
@@ -25,6 +34,6 @@ export const structure: StructureResolver = (S) =>
       ...S.documentTypeListItems().filter(
         (item) =>
           item.getId() &&
-          !["post", "category", "author", "form", "page", "faq","siteSettings"].includes(item.getId()!)
+          !["post", "category", "author", "form", "formSubmission", "page", "faq","siteSettings"].includes(item.getId()!)
       ),
     ]);

@@ -14,6 +14,7 @@ import { resolve } from "@/sanity/presentation/resolve";
 import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
+import { exportSubmissionsAction } from "./src/sanity/actions/exportSubmissions";
 
 export default defineConfig({
   basePath: "/studio",
@@ -37,5 +38,11 @@ export default defineConfig({
   ],
   document: {
     newDocumentOptions: (prev) => prev.filter((item) => item.templateId !== "siteSettings"),
+    actions: (prev, { schemaType }) => {
+      if (schemaType === 'formSubmission') {
+        return [...prev, exportSubmissionsAction]
+      }
+      return prev
+    }
   },
 });

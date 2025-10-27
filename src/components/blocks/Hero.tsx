@@ -19,30 +19,32 @@ export function Hero({ title, text, image, button }: HeroProps) {
           <div className="space-y-4 lg:space-y-8 order-2 lg:order-1">
             {/* Main Heading */}
             {title ? (
-              <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl xl:text-7xl/19 text-primary-950 leading-tight fade-in-up delay-200">
+              <h1 className="font-sans text-4xl md:text-5xl lg:text-6xl xl:text-7xl/19 text-primary-950 leading-tight fade-in-up immediate delay-200">
                 {title}
               </h1>
             ) : null}
 
             {/* Description */}
-            <div className="font-sans text-lg sm:text-xl lg:text-2xl text-foreground text-primary-950 leading-relaxed max-w-2xl fade-in-up delay-300">
+            <div className="font-sans text-lg sm:text-xl lg:text-2xl text-foreground text-primary-950 leading-relaxed max-w-2xl fade-in-up immediate delay-300">
               {text ? <PortableText value={text} /> : null}
             </div>
 
-            {/* Button */}
-            {button?.text && button?.url && (
-              <Link
-                href={button.url}
-                target={button.newTab ? "_blank" : undefined}
-                rel={button.newTab ? "noopener noreferrer" : undefined}
-              >
-                <Button variant="primary">{button.text}</Button>
-              </Link>
-            )}
+            <div className="fade-in-up immediate delay-300">
+              {/* Button */}
+              {button?.text && button?.url && (
+                <Link
+                  href={button.url}
+                  target={button.newTab ? "_blank" : undefined}
+                  rel={button.newTab ? "noopener noreferrer" : undefined}
+                >
+                  <Button variant="primary">{button.text}</Button>
+                </Link>
+              )}
+            </div>
           </div>
 
           {/* Right Column - Image */}
-          <div className="relative order-1 lg:order-2 hidden md:block fade-in-up delay-500">
+          <div className="relative order-1 lg:order-2 hidden md:block fade-in-up immediate delay-500">
             <div className="relative w-full h-96 sm:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden">
               {image ? (
                 <Image

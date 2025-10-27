@@ -11,7 +11,8 @@ const nextConfig: NextConfig = {
   },
   // Ensure proper static generation
   output: 'standalone',
-  // Optimize bundle size
+  // Disable turbopack completely to use webpack
+  // Use webpack instead of turbopack to avoid Resend compatibility issues
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

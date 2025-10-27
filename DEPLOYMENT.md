@@ -17,8 +17,16 @@ This project is optimized for deployment on Vercel with Sanity CMS integration.
    NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id_here
    NEXT_PUBLIC_SANITY_DATASET=production
    NEXT_PUBLIC_SANITY_API_VERSION=2025-09-28
+   SANITY_API_WRITE_TOKEN=your_sanity_write_token_here
    RESEND_API_KEY=your_resend_api_key_here
    ```
+
+   **Sanity Write Token Setup:**
+   - Go to your Sanity project settings at [sanity.io](https://sanity.io)
+   - Navigate to "API" section
+   - Create a new token with "Editor" permissions
+   - Add the token to your Vercel environment variables
+   - This is required for storing form submissions in Sanity
 
    **Resend Setup:**
    - Sign up for a Resend account at [resend.com](https://resend.com)

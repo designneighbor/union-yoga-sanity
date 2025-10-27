@@ -13,6 +13,30 @@
  */
 
 // Source: schema.json
+export type FormSubmission = {
+  _id: string;
+  _type: "formSubmission";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  form?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "form";
+  };
+  submittedAt?: string;
+  status?: "unread" | "read" | "archived";
+  data?: Array<{
+    fieldName?: string;
+    fieldLabel?: string;
+    value?: string;
+    _key: string;
+  }>;
+  ipAddress?: string;
+  userAgent?: string;
+};
+
 export type FormBlock = {
   _type: "formBlock";
   form?: {
@@ -281,6 +305,18 @@ export type PageTitle = {
   subhead?: string;
   title?: string;
   text?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type Features = {
@@ -740,7 +776,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -1124,6 +1160,18 @@ export type PAGE_QUERYResult = {
     subhead?: string;
     title?: string;
     text?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
   } | {
     _key: string;
     _type: "prose";
@@ -1504,6 +1552,18 @@ export type HOME_PAGE_QUERYResult = {
       subhead?: string;
       title?: string;
       text?: string;
+      image?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
     } | {
       _key: string;
       _type: "prose";

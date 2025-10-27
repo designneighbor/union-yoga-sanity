@@ -7,15 +7,12 @@ type FeaturesProps = Extract<
   { _type: "features" }
 >;
 
-export function Features({ features, title, }: FeaturesProps) {
+export function Features({ features, }: FeaturesProps) {
   return (
     <section className="container px-4 sm:px-6 md:px-8 xl:px-10 py-12">
       
-      {title ? (
-        <h2 className="text-xl md:text-2xl lg:text-5xl mb-6">
-          {title}
-        </h2>
-      ) : null}
+
+     
 
       {Array.isArray(features) ? (
         

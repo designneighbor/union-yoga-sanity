@@ -16,6 +16,7 @@ import { formType } from "./formType";
 import { formFieldType } from "./formFieldType";
 import { formBlockType } from "./blocks/formBlockType";
 import { formSubmissionType } from "./formSubmissionType";
+import { videoType } from "./blocks/videoType";
 
 import {blockContentType} from './blockContentType'
 import {categoryType} from './categoryType'
@@ -45,5 +46,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     formFieldType,
     formBlockType,
     formSubmissionType,
+    videoType,
   ],
 }

@@ -122,7 +122,7 @@ export function Form({ form }: FormProps) {
       const errorMessages = Object.values(newFieldErrors);
       setErrorMessage(errorMessages.join(", "));
       setSubmitStatus("error");
-      
+
       // Focus on first field with error
       const firstErrorField = Object.keys(newFieldErrors)[0];
       if (firstErrorField) {
@@ -187,11 +187,11 @@ export function Form({ form }: FormProps) {
       required: field.required || false,
       className:
         "w-full px-4 py-3 border border-neutral-300 bg-white rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors",
-      "aria-describedby": fieldErrors[field.name] 
-        ? `${field.name}-error` 
-        : field.required 
-        ? `${field.name}-required` 
-        : undefined,
+      "aria-describedby": fieldErrors[field.name]
+        ? `${field.name}-error`
+        : field.required
+          ? `${field.name}-required`
+          : undefined,
       "aria-invalid": fieldErrors[field.name] ? true : false,
     };
 
@@ -213,8 +213,8 @@ export function Form({ form }: FormProps) {
           <fieldset className="space-y-2">
             <legend className="sr-only">{field.label}</legend>
             {field.options?.map((option, index) => (
-              <label 
-                key={option.value} 
+              <label
+                key={option.value}
                 className="flex items-center space-x-2 cursor-pointer"
                 htmlFor={`${field.name}-${index}`}
               >
@@ -229,7 +229,11 @@ export function Form({ form }: FormProps) {
                   }
                   required={field.required || false}
                   className="text-primary-600 focus:ring-primary-500"
-                  aria-describedby={field.name && fieldErrors[field.name] ? `${field.name}-error` : undefined}
+                  aria-describedby={
+                    field.name && fieldErrors[field.name]
+                      ? `${field.name}-error`
+                      : undefined
+                  }
                 />
                 <span className="text-sm text-gray-700">{option.label}</span>
               </label>
@@ -246,7 +250,11 @@ export function Form({ form }: FormProps) {
               onChange={(e) => handleInputChange(field.name!, e.target.value)}
               required={field.required || false}
               className="w-full px-4 py-3 pr-10 bg-white border border-neutral-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors appearance-none cursor-pointer"
-              aria-describedby={field.name && fieldErrors[field.name] ? `${field.name}-error` : undefined}
+              aria-describedby={
+                field.name && fieldErrors[field.name]
+                  ? `${field.name}-error`
+                  : undefined
+              }
             >
               <option value="">Select an option...</option>
               {field.options?.map((option) => (
@@ -255,7 +263,10 @@ export function Form({ form }: FormProps) {
                 </option>
               ))}
             </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none" aria-hidden="true">
+            <div
+              className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+              aria-hidden="true"
+            >
               <ChevronDown
                 strokeWidth={1.5}
                 className="h-6 w-6 text-neutral-950"
@@ -270,13 +281,16 @@ export function Form({ form }: FormProps) {
 
   if (submitStatus === "success") {
     return (
-      <div 
+      <div
         className="max-w-2xl mx-auto p-8 bg-green-50 border border-green-200 rounded-lg"
         role="alert"
         aria-live="polite"
       >
         <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4" aria-hidden="true">
+          <div
+            className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4"
+            aria-hidden="true"
+          >
             <svg
               className="h-6 w-6 text-green-600"
               fill="none"
@@ -304,103 +318,117 @@ export function Form({ form }: FormProps) {
 
   return (
     <section className="container px-4 sm:px-6 md:px-8 xl:px-10 py-12">
-      <div className="bg-neutral-100 px-8 py-12 rounded-lg max-w-full mx-auto">
-      <form 
-        onSubmit={handleSubmit} 
-        className="space-y-6 max-w-2xl mx-auto"
-        aria-labelledby="form-title"
-        noValidate
-      >
-        <div className="mb-8">
-          <h2 id="form-title" className="text-5xl text-primary-950 mb-6">
-            {form.title}
-          </h2>
-          {form.text && (
-            <div className="text-lg text-neutral-900" role="complementary" aria-label="Form description">
-              <PortableText value={form.text} />
+      <div className="bg-neutral-100 rounded-lg mx-auto p-6 md:p-12">
+        <form
+          onSubmit={handleSubmit}
+          className="flex max-w-full mx-auto flex-col md:flex-row gap-6 md:gap-12"
+          aria-labelledby="form-title"
+          noValidate
+        >
+          <div className="flex-1">
+            <h2 id="form-title" className="text-5xl text-primary-950 mb-6">
+              {form.title}
+            </h2>
+            {form.text && (
+              <div
+                className="text-lg text-neutral-900"
+                role="complementary"
+                aria-label="Form description"
+              >
+                <PortableText value={form.text} />
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1">
+            <div>
+              {form.fields.map((field) => {
+                if (!field.name || !field.label) return null;
+
+                return (
+                  <div key={field.name} className="space-y-2 mb-4">
+                    <label
+                      htmlFor={field.name}
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      {field.label}
+                      {field.required && (
+                        <>
+                          <span
+                            className="text-red-500 ml-1"
+                            aria-label="required"
+                          >
+                            *
+                          </span>
+                          <span
+                            id={`${field.name}-required`}
+                            className="sr-only"
+                          >
+                            (required)
+                          </span>
+                        </>
+                      )}
+                    </label>
+                    {renderField(field)}
+                    {fieldErrors[field.name] && (
+                      <p
+                        id={`${field.name}-error`}
+                        className="text-sm text-red-600 mt-1"
+                        role="alert"
+                        aria-live="polite"
+                      >
+                        {fieldErrors[field.name]}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          )}
-        </div>
 
-        <div className="space-y-6">
-          {form.fields.map((field) => {
-            if (!field.name || !field.label) return null;
+            {submitStatus === "error" && (
+              <div
+                id="form-error"
+                className="p-4 bg-red-50 border border-red-200 rounded-lg"
+                role="alert"
+                aria-live="assertive"
+              >
+                <div className="flex">
+                  <div className="flex-shrink-0" aria-hidden="true">
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">Error</h3>
+                    <p className="text-sm text-red-700 mt-1">{errorMessage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
-            return (
-              <div key={field.name} className="space-y-2">
-                <label
-                  htmlFor={field.name}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {field.label}
-                  {field.required && (
-                    <>
-                      <span className="text-red-500 ml-1" aria-label="required">
-                        *
-                      </span>
-                      <span id={`${field.name}-required`} className="sr-only">
-                        (required)
-                      </span>
-                    </>
-                  )}
-                </label>
-                {renderField(field)}
-                {fieldErrors[field.name] && (
-                  <p 
-                    id={`${field.name}-error`}
-                    className="text-sm text-red-600 mt-1"
-                    role="alert"
-                    aria-live="polite"
-                  >
-                    {fieldErrors[field.name]}
-                  </p>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {submitStatus === "error" && (
-          <div 
-            id="form-error"
-            className="p-4 bg-red-50 border border-red-200 rounded-lg"
-            role="alert"
-            aria-live="assertive"
-          >
-            <div className="flex">
-              <div className="flex-shrink-0" aria-hidden="true">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <p className="text-sm text-red-700 mt-1">{errorMessage}</p>
-              </div>
+            <div className="">
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={isSubmitting}
+                className="w-full"
+                aria-describedby={
+                  submitStatus === "error" ? "form-error" : undefined
+                }
+              >
+                {isSubmitting ? "Submitting..." : form.submitButtonText}
+              </Button>
             </div>
           </div>
-        )}
-
-        <div className="pt-4">
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={isSubmitting}
-            className="w-full"
-            aria-describedby={submitStatus === "error" ? "form-error" : undefined}
-          >
-            {isSubmitting ? "Submitting..." : form.submitButtonText}
-          </Button>
-        </div>
-      </form>
+        </form>
       </div>
     </section>
   );

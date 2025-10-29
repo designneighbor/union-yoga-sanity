@@ -10,8 +10,8 @@ export interface NavigationBarProps extends React.HTMLAttributes<HTMLElement> {
   navigationItems?: Array<{
     label: string;
     href: string;
+    openInNewTab?: boolean;
   }>;
-  signInHref?: string;
   primaryButtonText?: string;
   primaryButtonHref?: string;
 }
@@ -21,13 +21,12 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
     className = '',
     logoText = "Union Yoga",
     navigationItems = [
-      { label: "About", href: "/about" },
-      { label: "Classes", href: "#classes" },
-      { label: "Blog", href: "/blog" }
+      { label: "About", href: "/about", openInNewTab: false },
+      { label: "Classes", href: "#classes", openInNewTab: false },
+      { label: "Blog", href: "/blog", openInNewTab: false }
     ],
-    signInHref = "#signin",
-    primaryButtonText = "Design System",
-    primaryButtonHref = "/design-system",
+    primaryButtonText = "Read Our Blog",
+    primaryButtonHref = "/blog",
     ...props 
   }, ref) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,6 +44,33 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
 
     const closeMobileMenu = () => {
       setIsMobileMenuOpen(false);
+    };
+
+    // Helper function to determine if a link is external
+    const isExternalLink = (href: string) => {
+      return href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:');
+    };
+
+    // Helper function to render navigation links
+    const renderNavigationLink = (item: { label: string; href: string; openInNewTab?: boolean }, className: string, onClick?: () => void) => {
+      const isExternal = isExternalLink(item.href);
+      const shouldOpenInNewTab = item.openInNewTab || (isExternal && item.openInNewTab !== false);
+      
+      const linkProps = {
+        href: item.href,
+        className,
+        onClick,
+        ...(shouldOpenInNewTab && {
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        })
+      };
+
+      if (isExternal || shouldOpenInNewTab) {
+        return <a {...linkProps}>{item.label}</a>;
+      } else {
+        return <Link {...linkProps}>{item.label}</Link>;
+      }
     };
 
 
@@ -71,26 +97,19 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
            
 
               {/* Navigation Links */}
-              <div className={`${animationClass} items-center space-x-2 bg-neutral-200 flex hidden lg:flex rounded-full`}>
+              <div className={`${animationClass} items-center bg-neutral-200 flex hidden lg:flex rounded-full`}>
                 {navigationItems.map((item, index) => (
-                  <a
-                    key={index}
-                    href={item.href}
-                    className="font-sans font-normal text-base font-medium text-primary-950 hover:text-primary-950 px-4 py-2 rounded-full hover:bg-neutral-300/50 transition-colors duration-200"
-                  >
-                    {item.label}
-                  </a>
+                  <React.Fragment key={index}>
+                    {renderNavigationLink(
+                      item,
+                      "font-sans font-normal text-base font-medium text-primary-950 hover:text-primary-950 px-4 py-2 rounded-full hover:bg-neutral-300/50 transition-colors duration-200"
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
 
               {/* Action Buttons */}
               <div className={`${animationClass} hidden lg:flex items-center space-x-4`}>
-                <a
-                  href={signInHref}
-                  className="font-sans font-normal text-sm font-medium text-primary-950 hover:text-primary-800 transition-colors duration-200"
-                >
-                  Sign In
-                </a>
                 <Button
                   variant="primary"
                   size="sm"
@@ -194,13 +213,11 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
                   <div className="">
                     {navigationItems.map((item, index) => (
                       <div key={index}>
-                        <a
-                          href={item.href}
-                          className="font-sans font-normal text-lg px-6 py-4 font-medium text-white hover:text-neutral-200 border-b border-primary-800 block hover:bg-primary-800 transition-colors duration-200"
-                          onClick={closeMobileMenu}
-                        >
-                          {item.label}
-                        </a>
+                        {renderNavigationLink(
+                          item,
+                          "font-sans font-normal text-lg px-6 py-4 font-medium text-white hover:text-neutral-200 border-b border-primary-800 block hover:bg-primary-800 transition-colors duration-200",
+                          closeMobileMenu
+                        )}
                       </div>
                     ))}
                   </div>
@@ -208,16 +225,6 @@ const NavigationBar = React.forwardRef<HTMLElement, NavigationBarProps>(
 
                 {/* Action Buttons */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 space-y-4">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="w-full"
-                    asChild
-                  >
-                    <a href={signInHref} onClick={closeMobileMenu}>
-                      Sign In
-                    </a>
-                  </Button>
                   <Button
                     variant="primary"
                     size="sm"

@@ -14,6 +14,11 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
     href: string;
     icon: React.ReactNode;
   }>;
+  footerLinks?: Array<{
+    label: string;
+    href: string;
+    openInNewTab?: boolean;
+  }>;
   className?: string;
 }
 
@@ -21,83 +26,55 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
   ({ 
     className = '',
     logoText = "Union Yoga",
-    primaryButtonText = "Design System",
-    primaryButtonHref = "/design-system",
-    secondaryButtonText = "Learn More",
-    secondaryButtonHref = "#learn-more",
+    primaryButtonText = "Learn More",
+    primaryButtonHref = "/about",
+    secondaryButtonText = "Contact Us",
+    secondaryButtonHref = "/contact",
     socialLinks = [
       {
         name: "Instagram",
-        href: "https://instagram.com/unionyoga",
+        href: "#",
         icon: <Instagram className="w-5 h-5" />
       },
       {
         name: "Facebook",
-        href: "https://facebook.com/unionyoga",
+        href: "#",
         icon: <Facebook className="w-5 h-5" />
       },
       {
         name: "Twitter",
-        href: "https://twitter.com/unionyoga",
+        href: "#",
         icon: <Twitter className="w-5 h-5" />
       }
     ],
+    footerLinks = [],
     ...props 
   }, ref) => {
-    // Navigation link data for yoga website
-    const navigationSections = [
-      {
-        title: "Classes",
-        links: [
-          { label: "Beginner Yoga", href: "#beginner" },
-          { label: "Vinyasa Flow", href: "#vinyasa" },
-          { label: "Hatha Yoga", href: "#hatha" },
-          { label: "Yin Yoga", href: "#yin" },
-          { label: "Restorative", href: "#restorative" },
-          { label: "Prenatal", href: "#prenatal" },
-          { label: "Private Sessions", href: "#private" },
-          { label: "Online Classes", href: "#online" }
-        ]
-      },
-      {
-        title: "Membership",
-        links: [
-          { label: "Pricing", href: "#pricing" },
-          { label: "Class Packages", href: "#packages" },
-          { label: "Unlimited Monthly", href: "#unlimited" },
-          { label: "Student Discounts", href: "#student" },
-          { label: "Corporate Wellness", href: "#corporate" }
-        ]
-      },
-      {
-        title: "Resources",
-        links: [
-          { label: "About Yoga", href: "#about-yoga" },
-          { label: "Blog", href: "#blog" },
-          { label: "Help Center", href: "#help" },
-          { label: "Teacher Training", href: "#training" },
-          { label: "Workshops", href: "#workshops" }
-        ]
-      },
-      {
-        title: "Community",
-        links: [
-          { label: "Events", href: "#events" },
-          { label: "Retreats", href: "#retreats" },
-          { label: "Teacher Directory", href: "#teachers" },
-          { label: "Student Stories", href: "#stories" }
-        ]
-      },
-      {
-        title: "Company",
-        links: [
-          { label: "About Us", href: "#about" },
-          { label: "Careers", href: "#careers" },
-          { label: "Contact", href: "#contact" },
-          { label: "Studio Locations", href: "#locations" }
-        ]
+    // Helper function to determine if a link is external
+    const isExternalLink = (href: string) => {
+      return href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:');
+    };
+
+    // Helper function to render footer links
+    const renderFooterLink = (item: { label: string; href: string; openInNewTab?: boolean }) => {
+      const isExternal = isExternalLink(item.href);
+      const shouldOpenInNewTab = item.openInNewTab || (isExternal && item.openInNewTab !== false);
+      
+      const linkProps = {
+        href: item.href,
+        className: "font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded",
+        ...(shouldOpenInNewTab && {
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        })
+      };
+
+      if (isExternal || shouldOpenInNewTab) {
+        return <a {...linkProps}>{item.label}</a>;
+      } else {
+        return <Link {...linkProps}>{item.label}</Link>;
       }
-    ];
+    };
 
     return (
       <footer
@@ -106,9 +83,6 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
         {...props}
       >
         <div className="container px-4 sm:px-6 md:px-8 xl:px-10 py-12">
-
-        <div className="border-b border-neutral-200 mb-12"></div>
-            
           {/* Top Section - Logo and Action Buttons */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
             {/* Logo */}
@@ -147,66 +121,47 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-            {navigationSections.map((section, sectionIndex) => (
-              <div key={sectionIndex}>
-                <h3 className="font-sans text-base font-semibold text-primary-950 mb-4">
-                  {section.title}
-                </h3>
-                <ul className="space-y-3">
-                  {section.links.map((link, linkIndex) => (
-                    <li key={linkIndex}>
-                      <a
-                        href={link.href}
-                        className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
           {/* Bottom Section - Legal, Social, Disclaimer */}
           <div className="">
             {/* Legal and Social Links */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between border-t border-b border-neutral-200 py-6">
-              {/* Legal Links */}
+              {/* Footer Links */}
               <div className="flex flex-wrap items-center gap-4 mb-4 lg:mb-0">
-                <a
-                  href="#terms"
-                  className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
-                >
-                  Terms
-                </a>
-                <a
-                  href="#privacy"
-                  className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
-                >
-                  Privacy
-                </a>
-                <a
-                  href="#disclosures"
-                  className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
-                >
-                  Disclosures
-                </a>
-                <a
-                  href="#cookies"
-                  className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
-                >
-                  Cookie Settings
-                </a>
-
-                {/* 
-                <span className="font-sans text-sm text-primary-600">
-                  Union Yoga Wellness LLC
-                </span>
-                */}
-                
+                {footerLinks.length > 0 ? (
+                  footerLinks.map((link, index) => (
+                    <React.Fragment key={index}>
+                      {renderFooterLink(link)}
+                    </React.Fragment>
+                  ))
+                ) : (
+                  // Fallback if no links provided
+                  <>
+                    <a
+                      href="#terms"
+                      className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+                    >
+                      Terms
+                    </a>
+                    <a
+                      href="#privacy"
+                      className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+                    >
+                      Privacy
+                    </a>
+                    <a
+                      href="#disclosures"
+                      className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+                    >
+                      Disclosures
+                    </a>
+                    <a
+                      href="#cookies"
+                      className="font-sans text-sm text-primary-700 hover:text-primary-950 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded"
+                    >
+                      Cookie Settings
+                    </a>
+                  </>
+                )}
               </div>
 
               {/* Social Media Icons */}

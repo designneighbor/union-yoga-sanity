@@ -13,6 +13,13 @@
  */
 
 // Source: schema.json
+export type Video = {
+  _type: "video";
+  url?: string;
+  title?: string;
+  alt?: string;
+};
+
 export type FormSubmission = {
   _id: string;
   _type: "formSubmission";
@@ -238,6 +245,7 @@ export type SplitImage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
   button?: {
@@ -325,6 +333,7 @@ export type Features = {
   features?: Array<{
     title?: string;
     text?: string;
+    link?: string;
     image?: {
       asset?: {
         _ref: string;
@@ -354,6 +363,19 @@ export type SiteSettings = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "page";
   };
+  navigation?: Array<{
+    title?: string;
+    page?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "page";
+    };
+    externalUrl?: string;
+    openInNewTab?: boolean;
+    _type: "navItem";
+    _key: string;
+  }>;
 };
 
 export type Prose = {
@@ -482,7 +504,9 @@ export type PageBuilder = Array<{
   _key: string;
 } & Testimonials | {
   _key: string;
-} & FormBlock>;
+} & FormBlock | {
+  _key: string;
+} & Video>;
 
 export type Page = {
   _id: string;
@@ -776,7 +800,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Video | FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -1036,6 +1060,7 @@ export type PAGE_QUERYResult = {
     features?: Array<{
       title?: string;
       text?: string;
+      link?: string;
       image?: {
         asset?: {
           _ref: string;
@@ -1273,6 +1298,7 @@ export type PAGE_QUERYResult = {
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
+      alt?: string;
       _type: "image";
     };
     button?: {
@@ -1302,6 +1328,12 @@ export type PAGE_QUERYResult = {
         _type: "image";
       } | null;
     }> | null;
+  } | {
+    _key: string;
+    _type: "video";
+    url?: string;
+    title?: string;
+    alt?: string;
   }> | null;
   mainImage?: {
     asset?: {
@@ -1315,6 +1347,21 @@ export type PAGE_QUERYResult = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+} | null;
+// Variable: SITE_SETTINGS_QUERY
+// Query: *[_type == "siteSettings"][0] {  homePage->{    title,    "slug": slug.current  },  navigation[] {    title,    "pageSlug": page->slug.current,    "pageTitle": page->title,    externalUrl,    openInNewTab  }}
+export type SITE_SETTINGS_QUERYResult = {
+  homePage: {
+    title: string | null;
+    slug: string | null;
+  } | null;
+  navigation: Array<{
+    title: string | null;
+    pageSlug: string | null;
+    pageTitle: string | null;
+    externalUrl: string | null;
+    openInNewTab: boolean | null;
+  }> | null;
 } | null;
 // Variable: HOME_PAGE_QUERY
 // Query: *[_id == "siteSettings"][0]{  homePage->{    ...,    content[]{      ...,      _type == "faqs" => {        ...,        faqs[]->{          _id,          _type,          title,          body        }      },      _type == "testimonials" => {        ...,        testimonials[]->{          _id,          _type,          quote,          name,          company,          image        }      },      _type == "formBlock" => {  ...,  form->{    _id,    name,    title,    text,    fields[]{      name,      label,      fieldType,      required,      options[]{        label,        value      }    },    submitButtonText,    recipientEmail  }}    }        }}
@@ -1428,6 +1475,7 @@ export type HOME_PAGE_QUERYResult = {
       features?: Array<{
         title?: string;
         text?: string;
+        link?: string;
         image?: {
           asset?: {
             _ref: string;
@@ -1665,6 +1713,7 @@ export type HOME_PAGE_QUERYResult = {
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
+        alt?: string;
         _type: "image";
       };
       button?: {
@@ -1694,6 +1743,12 @@ export type HOME_PAGE_QUERYResult = {
           _type: "image";
         } | null;
       }> | null;
+    } | {
+      _key: string;
+      _type: "video";
+      url?: string;
+      title?: string;
+      alt?: string;
     }> | null;
     mainImage?: {
       asset?: {
@@ -1769,6 +1824,7 @@ declare module "@sanity/client" {
     "*[_type == \"post\" && defined(slug.current)]{ \n  \"slug\": slug.current\n}": POSTS_SLUGS_QUERYResult;
     "*[_type == \"post\" && slug.current == $slug][0]{\n  _id,\n  title,\n  body,\n  mainImage,\n  publishedAt,\n  \"categories\": coalesce(\n    categories[]->{\n      _id,\n      slug,\n      title\n    },\n    []\n  ),\n  author->{\n    name,\n    image\n  }\n}": POST_QUERYResult;
     "*[_type == \"page\" && slug.current == $slug][0]{\n  ...,\n  content[]{\n    ...,\n    _type == \"faqs\" => {\n      ...,\n      faqs[]->{\n        _id,\n        _type,\n        title,\n        body\n      }\n    },\n    _type == \"testimonials\" => {\n      ...,\n      testimonials[]->{\n        _id,\n        _type,\n        quote,\n        name,\n        company,\n        image\n      }\n    },\n    _type == \"formBlock\" => {\n  ...,\n  form->{\n    _id,\n    name,\n    title,\n    text,\n    fields[]{\n      name,\n      label,\n      fieldType,\n      required,\n      options[]{\n        label,\n        value\n      }\n    },\n    submitButtonText,\n    recipientEmail\n  }\n}\n  }\n}": PAGE_QUERYResult;
+    "*[_type == \"siteSettings\"][0] {\n  homePage->{\n    title,\n    \"slug\": slug.current\n  },\n  navigation[] {\n    title,\n    \"pageSlug\": page->slug.current,\n    \"pageTitle\": page->title,\n    externalUrl,\n    openInNewTab\n  }\n}": SITE_SETTINGS_QUERYResult;
     "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    content[]{\n      ...,\n      _type == \"faqs\" => {\n        ...,\n        faqs[]->{\n          _id,\n          _type,\n          title,\n          body\n        }\n      },\n      _type == \"testimonials\" => {\n        ...,\n        testimonials[]->{\n          _id,\n          _type,\n          quote,\n          name,\n          company,\n          image\n        }\n      },\n      _type == \"formBlock\" => {\n  ...,\n  form->{\n    _id,\n    name,\n    title,\n    text,\n    fields[]{\n      name,\n      label,\n      fieldType,\n      required,\n      options[]{\n        label,\n        value\n      }\n    },\n    submitButtonText,\n    recipientEmail\n  }\n}\n    }      \n  }\n}": HOME_PAGE_QUERYResult;
     "*[_type == \"form\" && _id == $formId][0]{\n  _id,\n  name,\n  title,\n  text,\n  fields[]{\n    name,\n    label,\n    fieldType,\n    required,\n    width,\n    options[]{\n      label,\n      value\n    }\n  },\n  submitButtonText,\n  recipientEmail\n}": FORM_QUERYResult;
   }

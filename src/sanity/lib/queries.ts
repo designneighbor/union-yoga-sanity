@@ -97,6 +97,20 @@ export const PAGE_QUERY =
   }
 }`);
 
+export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings"][0] {
+  homePage->{
+    title,
+    "slug": slug.current
+  },
+  navigation[] {
+    title,
+    "pageSlug": page->slug.current,
+    "pageTitle": page->title,
+    externalUrl,
+    openInNewTab
+  }
+}`);
+
 export const HOME_PAGE_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   homePage->{
     ...,

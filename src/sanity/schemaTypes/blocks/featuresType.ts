@@ -26,6 +26,10 @@ export const featuresType = defineType({
               type: "string",
             }),
             defineField({
+              name: "link",
+              type: "string",
+            }),
+            defineField({
               name: "image",
               type: "image",
               options: {hotspot: true},

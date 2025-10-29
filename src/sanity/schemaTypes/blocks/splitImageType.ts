@@ -27,6 +27,14 @@ export const splitImageType = defineType({
       name: "image",
       type: "image",
       options: {hotspot: true},
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+          description: 'Describe the image for accessibility'
+        },
+      ],
     }),
     defineField({
       name: "button",

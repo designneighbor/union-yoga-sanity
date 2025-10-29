@@ -66,12 +66,11 @@ export const videoType = defineType({
       };
 
       const videoId = url ? extractVideoId(url) : null;
-      const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
 
       return {
         title: title || "Video Block",
         subtitle: url ? `YouTube: ${videoId || 'Invalid URL'}` : "No URL provided",
-        media: thumbnailUrl || PlayIcon,
+        media: PlayIcon,  // Always use PlayIcon - Sanity previews don't support external URLs
       };
     },
   },

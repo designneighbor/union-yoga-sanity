@@ -38,7 +38,7 @@ export function SplitImage({
               width={944}
               height={600}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
-              alt=""
+              alt={image?.alt || "Union Yoga Split Image"}
             />
           ) : null}
         </div>

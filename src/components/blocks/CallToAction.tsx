@@ -77,7 +77,7 @@ export function CallToAction({
                     .url()}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
-                  alt=""
+                  alt={image?.alt || "Union Yoga Call to Action Image"}
                 />
               </div>
             </div>

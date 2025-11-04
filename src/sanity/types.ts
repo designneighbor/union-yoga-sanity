@@ -196,6 +196,7 @@ export type CallToAction = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
 };
@@ -344,6 +345,7 @@ export type Features = {
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
+      alt?: string;
       _type: "image";
     };
     _type: "feature";
@@ -1011,6 +1013,7 @@ export type PAGE_QUERYResult = {
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
+      alt?: string;
       _type: "image";
     };
   } | {
@@ -1071,6 +1074,7 @@ export type PAGE_QUERYResult = {
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
+        alt?: string;
         _type: "image";
       };
       _type: "feature";
@@ -1426,6 +1430,7 @@ export type HOME_PAGE_QUERYResult = {
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
+        alt?: string;
         _type: "image";
       };
     } | {
@@ -1486,6 +1491,7 @@ export type HOME_PAGE_QUERYResult = {
           media?: unknown;
           hotspot?: SanityImageHotspot;
           crop?: SanityImageCrop;
+          alt?: string;
           _type: "image";
         };
         _type: "feature";

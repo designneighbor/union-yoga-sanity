@@ -45,6 +45,14 @@ export const callToActionType = defineType({
       name: "image",
       type: "image",
       options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+          description: 'Describe the image for accessibility'
+        },
+      ],
     }),
   ],
   icon: BlockContentIcon,

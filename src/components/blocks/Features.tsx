@@ -33,7 +33,7 @@ export function Features({ features, title }: FeaturesProps) {
                         .url()}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
-                      alt=""
+                      alt={feature.image?.alt || "Union Yoga Features Image"}
                     />
                   ) : null}
                 </div>

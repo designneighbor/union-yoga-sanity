@@ -46,13 +46,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate and sanitize recipient email
-    
+
     // Log the original email for debugging
     console.log("Original recipient email:", recipientEmail);
     console.log("Email type:", typeof recipientEmail);
     console.log("Email length:", recipientEmail?.length);
-    
-    if (!recipientEmail || typeof recipientEmail !== 'string') {
+
+    if (!recipientEmail || typeof recipientEmail !== "string") {
       return NextResponse.json(
         { error: "Recipient email is required and must be a string" },
         { status: 400 }
@@ -76,13 +76,14 @@ export async function POST(request: NextRequest) {
     const strictEmailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!strictEmailRegex.test(sanitizedRecipientEmail)) {
       return NextResponse.json(
-        { 
-          error: "Recipient email contains invalid characters", 
+        {
+          error: "Recipient email contains invalid characters",
           details: {
             original: recipientEmail,
             sanitized: sanitizedRecipientEmail,
-            message: "Email must contain only letters, numbers, dots, hyphens, underscores, and @ symbol"
-          }
+            message:
+              "Email must contain only letters, numbers, dots, hyphens, underscores, and @ symbol",
+          },
         },
         { status: 400 }
       );
@@ -132,12 +133,12 @@ export async function POST(request: NextRequest) {
     // Create email content with proper escaping
     const sanitizeHtml = (str: string) => {
       return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/[^\x00-\x7F]/g, ''); // Remove non-ASCII characters
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/[^\x00-\x7F]/g, ""); // Remove non-ASCII characters
     };
 
     const emailContent = `
@@ -159,7 +160,7 @@ export async function POST(request: NextRequest) {
     // Send email using Resend
     console.log("Sending email to:", sanitizedRecipientEmail);
     console.log("Email subject:", `New ${formName} Submission`);
-    
+
     const { data, error } = await resend.emails.send({
       from: "Union Yoga <no-reply@david-lewis.co>",
       to: [sanitizedRecipientEmail], // Use sanitized email
@@ -175,20 +176,21 @@ export async function POST(request: NextRequest) {
       if (error.name === "validation_error") {
         return NextResponse.json(
           {
-            error: "Email validation failed. Please check the recipient email address.",
+            error:
+              "Email validation failed. Please check the recipient email address.",
             details: {
               recipientEmail: sanitizedRecipientEmail,
-              resendError: error
-            }
+              resendError: error,
+            },
           },
           { status: 422 }
         );
       }
 
       return NextResponse.json(
-        { 
+        {
           error: "Failed to send email",
-          details: error
+          details: error,
         },
         { status: 500 }
       );
@@ -198,23 +200,27 @@ export async function POST(request: NextRequest) {
 
     // Store submission in Sanity
     try {
-      const submissionData = fields.map(field => ({
+      const submissionData = fields.map((field, index) => ({
+        _key: `field-${index}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         fieldName: field.name,
         fieldLabel: field.label,
-        value: formData[field.name] || "Not provided"
+        value: formData[field.name] || "Not provided",
       }));
 
       const submission = await writeClient.create({
         _type: "formSubmission",
         form: {
           _type: "reference",
-          _ref: formId
+          _ref: formId,
         },
         submittedAt: new Date().toISOString(),
         status: "unread",
         data: submissionData,
-        ipAddress: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown",
-        userAgent: request.headers.get("user-agent") || "unknown"
+        ipAddress:
+          request.headers.get("x-forwarded-for") ||
+          request.headers.get("x-real-ip") ||
+          "unknown",
+        userAgent: request.headers.get("user-agent") || "unknown",
       });
 
       console.log("Submission stored in Sanity:", submission._id);

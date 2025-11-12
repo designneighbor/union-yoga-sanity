@@ -32,5 +32,19 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         ],
       }),
     }),
+    newsletter: defineLocations({
+      select: {
+        title: "title",
+        _id: "_id",
+      },
+      resolve: (doc) => ({
+        locations: [
+          {
+            title: doc?.title || "Untitled Newsletter",
+            href: `/api/newsletters/preview?id=${doc?._id}`,
+          },
+        ],
+      }),
+    }),
   },
 }

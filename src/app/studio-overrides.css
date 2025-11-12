@@ -1,0 +1,4 @@
+/* Hide the narrow viewport switcher button in Presentation Tool */
+button[data-testid*="preview-viewport-toggle" i] {
+  display: none !important;
+}

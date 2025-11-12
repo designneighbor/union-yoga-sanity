@@ -11,8 +11,14 @@ export function ScrollAnimationProvider({ children }: { children: React.ReactNod
   useEffect(() => {
     // Wait for DOM to be fully loaded
     const initializeAnimations = () => {
-      const cleanup = initScrollAnimations();
-      return cleanup;
+      try {
+        const cleanup = initScrollAnimations();
+        return cleanup;
+      } catch (error) {
+        // Silently handle initialization errors (e.g., in iframe context)
+        console.debug('ScrollAnimationProvider initialization error:', error);
+        return () => {};
+      }
     };
 
     // Initialize immediately if DOM is ready, otherwise wait for load event
@@ -29,7 +35,11 @@ export function ScrollAnimationProvider({ children }: { children: React.ReactNod
 
     return () => {
       if (cleanup) {
-        cleanup();
+        try {
+          cleanup();
+        } catch (error) {
+          console.debug('ScrollAnimationProvider cleanup error:', error);
+        }
       }
     };
   }, [pathname]); // Re-run when pathname changes

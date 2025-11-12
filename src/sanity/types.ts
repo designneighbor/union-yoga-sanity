@@ -13,6 +13,130 @@
  */
 
 // Source: schema.json
+export type EmailDivider = {
+  _type: "emailDivider";
+  spacing?: number;
+  showLine?: boolean;
+  lineColor?: string;
+};
+
+export type EmailCTA = {
+  _type: "emailCTA";
+  text?: string;
+  url?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  align?: "left" | "center" | "right";
+};
+
+export type EmailBlogPosts = {
+  _type: "emailBlogPosts";
+  title?: string;
+  count?: number;
+  posts?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "post";
+  }>;
+};
+
+export type EmailTestimonials = {
+  _type: "emailTestimonials";
+  title?: string;
+  count?: number;
+  testimonials?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "testimonial";
+  }>;
+};
+
+export type EmailText = {
+  _type: "emailText";
+  content?: string;
+  textAlign?: "left" | "center" | "right";
+};
+
+export type EmailHero = {
+  _type: "emailHero";
+  headline?: string;
+  subheading?: string;
+  backgroundImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  backgroundColor?: string;
+  textColor?: string;
+};
+
+export type Subscriber = {
+  _id: string;
+  _type: "subscriber";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email?: string;
+  subscribed?: boolean;
+  subscriptionStatus?: "pending" | "subscribed" | "unsubscribed";
+  subscribedAt?: string;
+  confirmedAt?: string;
+  confirmationToken?: string;
+  lastEmailSent?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "newsletter";
+  };
+  unsubscribedAt?: string;
+  unsubscribeReason?: "too_many" | "not_relevant" | "never_subscribed" | "other";
+  tags?: Array<string>;
+  platformId?: string;
+};
+
+export type Newsletter = {
+  _id: string;
+  _type: "newsletter";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  content?: Array<{
+    _key: string;
+  } & EmailHero | {
+    _key: string;
+  } & EmailText | {
+    _key: string;
+  } & EmailTestimonials | {
+    _key: string;
+  } & EmailBlogPosts | {
+    _key: string;
+  } & EmailCTA | {
+    _key: string;
+  } & EmailDivider>;
+  status?: "draft" | "scheduled" | "sent";
+  scheduledSendTime?: string;
+  platform?: "resend" | "mailchimp" | "kit";
+  sentCount?: number;
+  sentAt?: string;
+  deliveryStats?: {
+    opens?: number;
+    clicks?: number;
+    bounces?: number;
+  };
+};
+
 export type Video = {
   _type: "video";
   url?: string;
@@ -802,7 +926,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Video | FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = EmailDivider | EmailCTA | EmailBlogPosts | EmailTestimonials | EmailText | EmailHero | Subscriber | Newsletter | Video | FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -1821,6 +1945,174 @@ export type FORM_QUERYResult = {
   submitButtonText: string | null;
   recipientEmail: string | null;
 } | null;
+// Variable: NEWSLETTER_QUERY
+// Query: *[_type == "newsletter" && _id == $id][0]{  _id,  title,  content[]{    ...,    _type == "emailTestimonials" => {      ...,      testimonials[]->{        _id,        quote,        name,        company,        image      }    },    _type == "emailBlogPosts" => {      ...,      posts[]->{        _id,        title,        slug,        mainImage,        publishedAt      }    }  },  status,  scheduledSendTime,  platform,  sentCount,  sentAt,  deliveryStats}
+export type NEWSLETTER_QUERYResult = {
+  _id: string;
+  title: string | null;
+  content: Array<{
+    _key: string;
+    _type: "emailBlogPosts";
+    title?: string;
+    count?: number;
+    posts: Array<{
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      mainImage: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+      } | null;
+      publishedAt: string | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "emailCTA";
+    text?: string;
+    url?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    align?: "center" | "left" | "right";
+  } | {
+    _key: string;
+    _type: "emailDivider";
+    spacing?: number;
+    showLine?: boolean;
+    lineColor?: string;
+  } | {
+    _key: string;
+    _type: "emailHero";
+    headline?: string;
+    subheading?: string;
+    backgroundImage?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    backgroundColor?: string;
+    textColor?: string;
+  } | {
+    _key: string;
+    _type: "emailTestimonials";
+    title?: string;
+    count?: number;
+    testimonials: Array<{
+      _id: string;
+      quote: string | null;
+      name: string | null;
+      company: string | null;
+      image: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    }> | null;
+  } | {
+    _key: string;
+    _type: "emailText";
+    content?: string;
+    textAlign?: "center" | "left" | "right";
+  }> | null;
+  status: "draft" | "scheduled" | "sent" | null;
+  scheduledSendTime: string | null;
+  platform: "kit" | "mailchimp" | "resend" | null;
+  sentCount: number | null;
+  sentAt: string | null;
+  deliveryStats: {
+    opens?: number;
+    clicks?: number;
+    bounces?: number;
+  } | null;
+} | null;
+// Variable: SUBSCRIBERS_QUERY
+// Query: *[_type == "subscriber"]|order(subscribedAt desc){  _id,  email,  subscribed,  subscriptionStatus,  subscribedAt,  confirmedAt,  lastEmailSent->{    _id,    title,    sentAt  },  unsubscribedAt,  unsubscribeReason,  tags,  platformId}
+export type SUBSCRIBERS_QUERYResult = Array<{
+  _id: string;
+  email: string | null;
+  subscribed: boolean | null;
+  subscriptionStatus: "pending" | "subscribed" | "unsubscribed" | null;
+  subscribedAt: string | null;
+  confirmedAt: string | null;
+  lastEmailSent: {
+    _id: string;
+    title: string | null;
+    sentAt: string | null;
+  } | null;
+  unsubscribedAt: string | null;
+  unsubscribeReason: "never_subscribed" | "not_relevant" | "other" | "too_many" | null;
+  tags: Array<string> | null;
+  platformId: string | null;
+}>;
+// Variable: ACTIVE_SUBSCRIBERS_QUERY
+// Query: *[_type == "subscriber" && subscriptionStatus == "subscribed"]{  _id,  email}
+export type ACTIVE_SUBSCRIBERS_QUERYResult = Array<{
+  _id: string;
+  email: string | null;
+}>;
+// Variable: RECENT_TESTIMONIALS_QUERY
+// Query: *[_type == "testimonial"]|order(_createdAt desc)[0...$count]{  _id,  quote,  name,  company,  image}
+export type RECENT_TESTIMONIALS_QUERYResult = Array<{
+  _id: string;
+  quote: string | null;
+  name: string | null;
+  company: string | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+// Variable: RECENT_POSTS_QUERY
+// Query: *[_type == "post" && defined(slug.current)]|order(publishedAt desc)[0...$count]{  _id,  title,  slug,  mainImage,  publishedAt}
+export type RECENT_POSTS_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+  publishedAt: string | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -1833,5 +2125,10 @@ declare module "@sanity/client" {
     "*[_type == \"siteSettings\"][0] {\n  homePage->{\n    title,\n    \"slug\": slug.current\n  },\n  navigation[] {\n    title,\n    \"pageSlug\": page->slug.current,\n    \"pageTitle\": page->title,\n    externalUrl,\n    openInNewTab\n  }\n}": SITE_SETTINGS_QUERYResult;
     "*[_id == \"siteSettings\"][0]{\n  homePage->{\n    ...,\n    content[]{\n      ...,\n      _type == \"faqs\" => {\n        ...,\n        faqs[]->{\n          _id,\n          _type,\n          title,\n          body\n        }\n      },\n      _type == \"testimonials\" => {\n        ...,\n        testimonials[]->{\n          _id,\n          _type,\n          quote,\n          name,\n          company,\n          image\n        }\n      },\n      _type == \"formBlock\" => {\n  ...,\n  form->{\n    _id,\n    name,\n    title,\n    text,\n    fields[]{\n      name,\n      label,\n      fieldType,\n      required,\n      options[]{\n        label,\n        value\n      }\n    },\n    submitButtonText,\n    recipientEmail\n  }\n}\n    }      \n  }\n}": HOME_PAGE_QUERYResult;
     "*[_type == \"form\" && _id == $formId][0]{\n  _id,\n  name,\n  title,\n  text,\n  fields[]{\n    name,\n    label,\n    fieldType,\n    required,\n    width,\n    options[]{\n      label,\n      value\n    }\n  },\n  submitButtonText,\n  recipientEmail\n}": FORM_QUERYResult;
+    "*[_type == \"newsletter\" && _id == $id][0]{\n  _id,\n  title,\n  content[]{\n    ...,\n    _type == \"emailTestimonials\" => {\n      ...,\n      testimonials[]->{\n        _id,\n        quote,\n        name,\n        company,\n        image\n      }\n    },\n    _type == \"emailBlogPosts\" => {\n      ...,\n      posts[]->{\n        _id,\n        title,\n        slug,\n        mainImage,\n        publishedAt\n      }\n    }\n  },\n  status,\n  scheduledSendTime,\n  platform,\n  sentCount,\n  sentAt,\n  deliveryStats\n}": NEWSLETTER_QUERYResult;
+    "*[_type == \"subscriber\"]|order(subscribedAt desc){\n  _id,\n  email,\n  subscribed,\n  subscriptionStatus,\n  subscribedAt,\n  confirmedAt,\n  lastEmailSent->{\n    _id,\n    title,\n    sentAt\n  },\n  unsubscribedAt,\n  unsubscribeReason,\n  tags,\n  platformId\n}": SUBSCRIBERS_QUERYResult;
+    "*[_type == \"subscriber\" && subscriptionStatus == \"subscribed\"]{\n  _id,\n  email\n}": ACTIVE_SUBSCRIBERS_QUERYResult;
+    "*[_type == \"testimonial\"]|order(_createdAt desc)[0...$count]{\n  _id,\n  quote,\n  name,\n  company,\n  image\n}": RECENT_TESTIMONIALS_QUERYResult;
+    "*[_type == \"post\" && defined(slug.current)]|order(publishedAt desc)[0...$count]{\n  _id,\n  title,\n  slug,\n  mainImage,\n  publishedAt\n}": RECENT_POSTS_QUERYResult;
   }
 }

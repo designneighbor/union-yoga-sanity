@@ -17,6 +17,14 @@ import { formFieldType } from "./formFieldType";
 import { formBlockType } from "./blocks/formBlockType";
 import { formSubmissionType } from "./formSubmissionType";
 import { videoType } from "./blocks/videoType";
+import { newsletterType } from "./newsletterType";
+import { subscriberType } from "./subscriberType";
+import { emailHeroType } from "./blocks/emailHeroType";
+import { emailTextType } from "./blocks/emailTextType";
+import { emailTestimonialsType } from "./blocks/emailTestimonialsType";
+import { emailBlogPostsType } from "./blocks/emailBlogPostsType";
+import { emailCTAType } from "./blocks/emailCTAType";
+import { emailDividerType } from "./blocks/emailDividerType";
 
 import {blockContentType} from './blockContentType'
 import {categoryType} from './categoryType'
@@ -47,5 +55,13 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     formBlockType,
     formSubmissionType,
     videoType,
+    newsletterType,
+    subscriberType,
+    emailHeroType,
+    emailTextType,
+    emailTestimonialsType,
+    emailBlogPostsType,
+    emailCTAType,
+    emailDividerType,
   ],
 }

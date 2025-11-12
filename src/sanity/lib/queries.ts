@@ -180,3 +180,76 @@ export const FORM_QUERY = defineQuery(`*[_type == "form" && _id == $formId][0]{
   submitButtonText,
   recipientEmail
 }`);
+
+export const NEWSLETTER_QUERY = defineQuery(`*[_type == "newsletter" && _id == $id][0]{
+  _id,
+  title,
+  content[]{
+    ...,
+    _type == "emailTestimonials" => {
+      ...,
+      testimonials[]->{
+        _id,
+        quote,
+        name,
+        company,
+        image
+      }
+    },
+    _type == "emailBlogPosts" => {
+      ...,
+      posts[]->{
+        _id,
+        title,
+        slug,
+        mainImage,
+        publishedAt
+      }
+    }
+  },
+  status,
+  scheduledSendTime,
+  platform,
+  sentCount,
+  sentAt,
+  deliveryStats
+}`);
+
+export const SUBSCRIBERS_QUERY = defineQuery(`*[_type == "subscriber"]|order(subscribedAt desc){
+  _id,
+  email,
+  subscribed,
+  subscriptionStatus,
+  subscribedAt,
+  confirmedAt,
+  lastEmailSent->{
+    _id,
+    title,
+    sentAt
+  },
+  unsubscribedAt,
+  unsubscribeReason,
+  tags,
+  platformId
+}`);
+
+export const ACTIVE_SUBSCRIBERS_QUERY = defineQuery(`*[_type == "subscriber" && subscriptionStatus == "subscribed"]{
+  _id,
+  email
+}`);
+
+export const RECENT_TESTIMONIALS_QUERY = defineQuery(`*[_type == "testimonial"]|order(_createdAt desc)[0...$count]{
+  _id,
+  quote,
+  name,
+  company,
+  image
+}`);
+
+export const RECENT_POSTS_QUERY = defineQuery(`*[_type == "post" && defined(slug.current)]|order(publishedAt desc)[0...$count]{
+  _id,
+  title,
+  slug,
+  mainImage,
+  publishedAt
+}`);

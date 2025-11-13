@@ -3,12 +3,40 @@ import type { StructureResolver } from "sanity/structure";
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title("Blog")
+    .title("Content")
     .items([
+      // Newsletter Section
+      S.listItem()
+        .id("newsletterSection")
+        .title("Newsletter")
+        .child(
+          S.list()
+            .title("Newsletter")
+            .items([
+              S.documentTypeListItem("newsletter").title("Newsletters"),
+              S.listItem()
+                .id("subscribers")
+                .title("Subscribers")
+                .child(
+                  S.documentTypeList("subscriber")
+                    .title("Subscribers")
+                    .filter('_type == "subscriber"')
+                    .defaultOrdering([{ field: "subscribeDate", direction: "desc" }])
+                    .child((id) =>
+                      S.document()
+                        .schemaType("subscriber")
+                        .documentId(id)
+                    )
+                ),
+            ])
+        ),
+      S.divider(),
+      // Blog Section
       S.documentTypeListItem("post").title("Posts"),
       S.documentTypeListItem("category").title("Categories"),
       S.documentTypeListItem("author").title("Authors"),
       S.divider(),
+      // Forms Section
       S.documentTypeListItem("form").title("Forms"),
       S.listItem()
         .id("formSubmissions")
@@ -34,6 +62,6 @@ export const structure: StructureResolver = (S) =>
       ...S.documentTypeListItems().filter(
         (item) =>
           item.getId() &&
-          !["post", "category", "author", "form", "formSubmission", "page", "faq","siteSettings"].includes(item.getId()!)
+          !["post", "category", "author", "form", "formSubmission", "page", "faq", "siteSettings", "newsletter", "subscriber"].includes(item.getId()!)
       ),
     ]);

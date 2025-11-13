@@ -15,6 +15,10 @@ import { apiVersion, dataset, projectId } from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
 import { structure } from "./src/sanity/structure";
 import { exportSubmissionsAction } from "./src/sanity/actions/exportSubmissions";
+import { sendNewsletterAction } from "./src/sanity/actions/sendNewsletter";
+import { testNewsletterAction } from "./src/sanity/actions/testNewsletter";
+import { viewNewsletterPreviewAction } from "./src/sanity/actions/viewNewsletterPreview";
+import { scheduleNewsletterAction } from "./src/sanity/actions/scheduleNewsletter";
 
 export default defineConfig({
   basePath: "/studio",
@@ -41,6 +45,15 @@ export default defineConfig({
     actions: (prev, { schemaType }) => {
       if (schemaType === 'formSubmission') {
         return [...prev, exportSubmissionsAction]
+      }
+      if (schemaType === 'newsletter') {
+        return [
+          ...prev,
+          viewNewsletterPreviewAction,
+          testNewsletterAction,
+          sendNewsletterAction,
+          scheduleNewsletterAction,
+        ]
       }
       return prev
     }

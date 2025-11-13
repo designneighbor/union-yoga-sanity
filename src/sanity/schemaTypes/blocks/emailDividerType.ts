@@ -1,11 +1,11 @@
 import { defineField, defineType } from "sanity";
-import { MinusIcon } from "@sanity/icons";
+import {ImageRemoveIcon} from '@sanity/icons'
 
 export const emailDividerType = defineType({
   name: "emailDivider",
   title: "Email Divider",
   type: "object",
-  icon: MinusIcon,
+  icon: ImageRemoveIcon,
   fields: [
     defineField({
       name: "spacer",
@@ -20,7 +20,7 @@ export const emailDividerType = defineType({
       return {
         title: "Email Divider",
         subtitle: "Divider",
-        media: MinusIcon,
+        media: ImageRemoveIcon,
       };
     },
   },

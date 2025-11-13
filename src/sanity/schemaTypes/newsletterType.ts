@@ -1,11 +1,11 @@
 import { defineField, defineType } from "sanity";
-import { MailIcon } from "@sanity/icons";
+import { EnvelopeIcon } from "@sanity/icons";
 
 export const newsletterType = defineType({
   name: "newsletter",
   title: "Newsletter",
   type: "document",
-  icon: MailIcon,
+  icon: EnvelopeIcon,
   fields: [
     defineField({
       name: "title",

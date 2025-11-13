@@ -114,7 +114,7 @@ export async function renderNewsletterToHtml(
             const refId = ref._ref || (typeof ref === "string" ? ref : null);
             if (!refId) return null;
             
-            const testimonial = testimonialsMap.get(refId);
+            const testimonial = testimonialsMap.get(refId) as any;
             if (testimonial) {
               return {
                 ...testimonial,
@@ -140,7 +140,7 @@ export async function renderNewsletterToHtml(
             const refId = ref._ref || (typeof ref === "string" ? ref : null);
             if (!refId) return null;
             
-            const post = blogPostsMap.get(refId);
+            const post = blogPostsMap.get(refId) as any;
             if (post) {
               return {
                 ...post,

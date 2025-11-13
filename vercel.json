@@ -7,6 +7,9 @@
     "src/app/api/**/*.ts": {
       "maxDuration": 30
     },
+    "src/app/api/**/*.tsx": {
+      "maxDuration": 30
+    },
     "src/app/api/newsletters/send/route.ts": {
       "maxDuration": 300
     },
@@ -14,12 +17,6 @@
       "maxDuration": 300
     }
   },
-  "crons": [
-    {
-      "path": "/api/newsletters/scheduled",
-      "schedule": "*/5 * * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/studio/(.*)",

@@ -78,11 +78,25 @@ This project is optimized for deployment on Vercel with Sanity CMS integration.
      - Static page generation
 
 4. **Configure Scheduled Newsletters (Optional)**
-   - The `vercel.json` includes a cron job that runs every 5 minutes
-   - This automatically processes scheduled newsletters
-   - The cron job calls `/api/newsletters/scheduled`
-   - If you set `CRON_SECRET`, the endpoint will require authentication
-   - To customize the schedule, edit the `crons` section in `vercel.json`
+   - **Vercel Cron Jobs** (Requires Pro Plan for frequent schedules):
+     - Hobby Plan: Up to 2 cron jobs, once per day max
+     - Pro Plan: Up to 40 cron jobs with unlimited invocations
+     - To enable, add a `crons` section to `vercel.json`:
+       ```json
+       "crons": [
+         {
+           "path": "/api/newsletters/scheduled",
+           "schedule": "0 9 * * *"
+         }
+       ]
+       ```
+     - This runs once daily at 9:00 AM UTC (Hobby plan compatible)
+     - For more frequent schedules (every 5 minutes), upgrade to Pro plan
+   - **Alternative: External Cron Service**:
+     - Use services like cron-job.org or EasyCron
+     - Point to: `https://your-site.vercel.app/api/newsletters/scheduled`
+     - Set authentication header if `CRON_SECRET` is configured
+   - **Manual Trigger**: You can also manually call the endpoint when needed
 
 5. **Configure Resend Webhooks (Optional)**
    - For email tracking (opens, clicks), set up Resend webhooks

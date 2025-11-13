@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     // Find subscriber by confirmation token (we reuse it for unsubscribe)
     const subscriber = await client.fetch(
       `*[_type == "subscriber" && confirmationToken == $token][0]`,
-      { token }
+      { token } as any
     );
 
     if (!subscriber) {

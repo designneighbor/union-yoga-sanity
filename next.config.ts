@@ -13,8 +13,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Ensure proper static generation
-  output: 'standalone',
   // Disable turbopack completely to use webpack
   // Use webpack instead of turbopack to avoid Resend compatibility issues
   webpack: (config, { isServer }) => {

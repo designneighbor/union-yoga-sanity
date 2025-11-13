@@ -8,6 +8,7 @@ import { CallToAction } from "@/components/blocks/CallToAction";
 import { Testimonials } from "@/components/blocks/Testimonials";
 import { Form } from "@/components/blocks/Form";
 import { Video } from "@/components/blocks/Video";
+import { NewsletterSubscribe } from "@/components/blocks/NewsletterSubscribe";
 import { PAGE_QUERYResult } from "@/sanity/types";
 
 type PageBuilderProps = {
@@ -33,6 +34,8 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return <FAQs key={block._key} {...block} />;
           case "callToAction":
             return <CallToAction key={block._key} {...block} />;
+          case "newsletterSubscribe":
+            return <NewsletterSubscribe key={block._key} {...block} />;
           case "prose":
             return <Prose key={block._key} {...block} />;
           case "testimonials":

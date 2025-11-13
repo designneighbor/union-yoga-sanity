@@ -13,11 +13,158 @@
  */
 
 // Source: schema.json
+export type EmailDivider = {
+  _type: "emailDivider";
+  spacer?: string;
+};
+
+export type EmailCTA = {
+  _type: "emailCTA";
+  text?: string;
+  url?: string;
+};
+
+export type EmailBlogPosts = {
+  _type: "emailBlogPosts";
+  blogPosts?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "post";
+  }>;
+};
+
+export type EmailTestimonials = {
+  _type: "emailTestimonials";
+  testimonials?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "testimonial";
+  }>;
+};
+
+export type EmailText = {
+  _type: "emailText";
+  text?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+};
+
+export type EmailHero = {
+  _type: "emailHero";
+  headline?: string;
+  subheading?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type NewsletterBuilder = Array<{
+  _key: string;
+} & EmailHero | {
+  _key: string;
+} & EmailText | {
+  _key: string;
+} & EmailTestimonials | {
+  _key: string;
+} & EmailBlogPosts | {
+  _key: string;
+} & EmailCTA | {
+  _key: string;
+} & EmailDivider>;
+
+export type Subscriber = {
+  _id: string;
+  _type: "subscriber";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email?: string;
+  subscribed?: boolean;
+  subscribeDate?: string;
+  confirmedAt?: string;
+  confirmationToken?: string;
+  lastEmailSent?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "newsletter";
+  };
+  unsubscribeReason?: "too_frequent" | "not_relevant" | "never_subscribed" | "other";
+  tags?: Array<string>;
+  unsubscribedAt?: string;
+};
+
+export type Newsletter = {
+  _id: string;
+  _type: "newsletter";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  content?: NewsletterBuilder;
+  status?: "draft" | "scheduled" | "sent";
+  scheduledSendTime?: string;
+  sentAt?: string;
+  stats?: {
+    sentCount?: number;
+    openCount?: number;
+    clickCount?: number;
+    deliveryDate?: string;
+  };
+};
+
 export type Video = {
   _type: "video";
   url?: string;
   title?: string;
   alt?: string;
+};
+
+export type NewsletterSubscribe = {
+  _type: "newsletterSubscribe";
+  spacer?: string;
 };
 
 export type FormSubmission = {
@@ -508,7 +655,9 @@ export type PageBuilder = Array<{
   _key: string;
 } & FormBlock | {
   _key: string;
-} & Video>;
+} & Video | {
+  _key: string;
+} & NewsletterSubscribe>;
 
 export type Page = {
   _id: string;
@@ -802,7 +951,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Video | FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = EmailDivider | EmailCTA | EmailBlogPosts | EmailTestimonials | EmailText | EmailHero | NewsletterBuilder | Subscriber | Newsletter | Video | NewsletterSubscribe | FormSubmission | FormBlock | FormField | Form | Testimonials | Testimonial | CallToAction | SplitImage | Hero | PageTitle | Features | SiteSettings | Prose | Faqs | Faq | PageBuilder | Page | Post | Author | Category | BlockContent | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: POSTS_QUERY
@@ -1183,6 +1332,10 @@ export type PAGE_QUERYResult = {
       url?: string;
       newTab?: boolean;
     };
+  } | {
+    _key: string;
+    _type: "newsletterSubscribe";
+    spacer?: string;
   } | {
     _key: string;
     _type: "pageTitle";
@@ -1600,6 +1753,10 @@ export type HOME_PAGE_QUERYResult = {
         url?: string;
         newTab?: boolean;
       };
+    } | {
+      _key: string;
+      _type: "newsletterSubscribe";
+      spacer?: string;
     } | {
       _key: string;
       _type: "pageTitle";

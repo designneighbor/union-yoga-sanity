@@ -6,6 +6,15 @@
   "functions": {
     "src/app/api/**/*.ts": {
       "maxDuration": 30
+    },
+    "src/app/api/**/*.tsx": {
+      "maxDuration": 30
+    },
+    "src/app/api/newsletters/send/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/newsletters/scheduled/route.ts": {
+      "maxDuration": 300
     }
   },
   "headers": [
